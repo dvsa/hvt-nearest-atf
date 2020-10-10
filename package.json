@@ -28,7 +28,8 @@
     "express": "^4.15.2",
     "govuk-frontend": "^3.9.0",
     "jsonwebtoken": "^8.5.1",
-    "nunjucks": "^3.2.2"
+    "nunjucks": "^3.2.2",
+    "postcode": "^5.0.0"
   },
   "devDependencies": {
     "@dvsa/eslint-config-ts": "^2.0.0",

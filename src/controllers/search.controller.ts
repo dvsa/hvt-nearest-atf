@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { logger } from '../utils/logger.util';
 import { PageSettings } from '../models/pageSettings.model';
-import { validate, FormError } from '../utils/validation.util';
+import { postcodeUtils, FormError } from '../utils/postcode.util';
 import { geolocatonService } from '../services/geolocation.service';
 
 const pageSettings: PageSettings = {
@@ -23,9 +23,10 @@ export const search = (req: Request, res: Response): void => {
 
 export const results = (req: Request, res: Response): void => {
   try {
-    const postcode = req.body.postcode.toString().toUpperCase() || '';
+    // eslint-disable-next-line
+    const postcode:string = req.body.postcode.toString().toUpperCase() || '';
     logger.info(req, `search for postcode ${postcode}`);
-    const errors: Array<FormError> = validate.postcode(postcode);
+    const errors: Array<FormError> = postcodeUtils.validate(postcode);
     let viewModel = { pageSettings };
     if (errors.length !== 0) {
       viewModel = Object.assign(viewModel, {
@@ -35,7 +36,8 @@ export const results = (req: Request, res: Response): void => {
       return res.render('search/show', viewModel);
     }
     viewModel = Object.assign(viewModel, {
-      search: postcode,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      search: postcodeUtils.toNormalised(postcode),
       data: geolocatonService.nearest(postcode),
     });
     return res.render('search/results', viewModel);
