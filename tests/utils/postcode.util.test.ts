@@ -1,6 +1,6 @@
 import { postcodeUtils } from '../../src/utils/postcode.util';
 
-describe('Test validation', () => {
+describe('Test postcode utility', () => {
   test('valid postcode returns no errors ', () => {
     expect(postcodeUtils.validate('NG1 6LP')).toEqual([]);
   });
