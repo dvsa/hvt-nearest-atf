@@ -28,15 +28,4 @@ describe('Test axios', () => {
 
     expect(axiosMock).toHaveBeenCalledWith(url, expectedHeaders);
   });
-
-  test('put() sends http request to correct url with expected data and headers', async () => {
-    const axiosMock = jest.spyOn(axios, 'put');
-    axiosMock.mockReturnValue(Promise.resolve({}));
-    const expectedHeaders = { headers: { 'X-Correlation-Id': awsRequestId } };
-    const requestData = { foo: 'bar' };
-
-    await request.put(requestMock, url, requestData);
-
-    expect(axiosMock).toHaveBeenCalledWith(url, requestData, expectedHeaders);
-  });
 });

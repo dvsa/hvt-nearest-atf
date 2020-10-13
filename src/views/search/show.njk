@@ -1,8 +1,10 @@
-{% extends "layouts/layout.njk" %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../govuk-frontend/govuk/components/input/macro.njk" import govukInput %}
+{% from "../govuk-frontend/govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "../govuk-frontend/govuk/components/button/macro.njk" import govukButton %}
 {% import "includes/errors.njk" as error %}
+
+{% extends "layouts/layout.njk" %}
+
 {% block content %}
 
     <div class="grid-row">
