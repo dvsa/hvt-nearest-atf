@@ -21,7 +21,7 @@ describe('Test geolocation.service', () => {
 
   describe('nearest method', () => {
     it('should call request.get() with proper params and return nearest ATFs array', async () => {
-      (request.get as jest.Mock).mockReturnValue(Promise.resolve({ data: atfs }));
+      (request.get as jest.Mock).mockReturnValue(Promise.resolve({ data: { Items: atfs } }));
 
       const results: AuthorisedTestingFacility[] = await geolocationService.nearest(req, postcode);
 

@@ -51,7 +51,7 @@ describe('Test search.controller', () => {
     it('should render search/results page with proper params when valid postcode provided', async () => {
       const postcode = 'po167gz';
       const postcodeUpperCase = postcode.toUpperCase();
-      const postodeNormalised = 'PO16 7GZ';
+      const postcodeNormalised = 'PO16 7GZ';
       reqMock.query = { postcode };
       const validateSpy = jest.spyOn(postcodeUtils, 'validate');
       const toNormalisedSpy = jest.spyOn(postcodeUtils, 'toNormalised');
@@ -61,27 +61,34 @@ describe('Test search.controller', () => {
 
       expect(renderSpy).toHaveBeenCalledWith(
         'search/results',
-        { search: postodeNormalised, data: atfs },
+        { search: postcodeNormalised, data: atfs },
       );
       expect(validateSpy).toHaveBeenCalledWith(postcodeUpperCase);
       expect(validateSpy).toReturnWith([]);
       expect(toNormalisedSpy).toHaveBeenCalledWith(postcodeUpperCase);
-      expect(toNormalisedSpy).toReturnWith(postodeNormalised);
+      expect(toNormalisedSpy).toReturnWith(postcodeNormalised);
     });
 
     it('should render search/show page with proper params when invalid postcode provided', async () => {
       const postcode = 'i am an invalid postcode';
       reqMock.query = { postcode };
       const validateSpy = jest.spyOn(postcodeUtils, 'validate');
+      const expectedFormErrors: FormError[] = [{
+        errors: [
+          { field: 'postcode', message: 'Enter a postcode, like SW1A 2AA' },
+        ],
+        heading: 'There is a problem',
+        errorMessage: 'Enter a postcode in the correct format',
+      }];
 
       await search(reqMock, resMock, nextMock);
 
       expect(renderSpy).toHaveBeenCalledWith(
         'search/show',
-        { hasError: true, formErrors: expect.anything() as Array<FormError> },
+        { hasError: true, formErrors: expectedFormErrors[0] },
       );
       expect(validateSpy).toHaveBeenCalledWith(postcode.toUpperCase());
-      expect(validateSpy).toReturnWith(expect.anything());
+      expect(validateSpy).toReturnWith(expectedFormErrors);
     });
   });
 });
