@@ -9,7 +9,7 @@ export const getAtf = (id: string): AuthorisedTestingFacility => ({
   id,
   name: 'Beier, Jacobi and Kautzer',
   url: 'https://google.com',
-  distanceInMiles: 12.6,
+  distance: 12.6,
   postcode: 'DE24 4NB',
   address1: 'Ashbourne Road',
   address2: 'Mackworth',

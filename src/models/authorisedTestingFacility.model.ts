@@ -9,7 +9,7 @@ export interface AuthorisedTestingFacility {
   id: string;
   name: string;
   url: string;
-  distanceInMiles: number;
+  distance: number;
   postcode: string;
   address1: string;
   address2: string;
