@@ -28,7 +28,7 @@ describe('Test geolocation.service', () => {
       expect(results).toStrictEqual(atfs);
       expect(request.get).toHaveBeenCalledWith(
         req,
-        `${process.env.GEOLOCATION_URL}?postcode=${postcode}`,
+        `${process.env.GEOLOCATION_URL}${postcode}`,
       );
     });
 

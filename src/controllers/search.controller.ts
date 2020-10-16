@@ -23,7 +23,7 @@ export const search = async (req: Request, res: Response, next: NextFunction): P
 
     return res.render('search/results', {
       search: postcodeUtils.toNormalised(postcode),
-      data: await geolocationService.nearest(req, postcode),
+      data: await geolocationService.nearest(req, postcode.replace(/\s+/g, '')),
     });
   } catch (error) {
     logger.warn(req, 'Error while rendering search page');

@@ -49,13 +49,14 @@ describe('Test search.controller', () => {
     });
 
     it('should render search/results page with proper params when valid postcode provided', async () => {
-      const postcode = 'po167gz';
+      const postcode = 'po16 7gz';
       const postcodeUpperCase = postcode.toUpperCase();
       const postcodeNormalised = 'PO16 7GZ';
+      const postcodeNormalisedStripped = 'PO167GZ';
       reqMock.query = { postcode };
       const validateSpy = jest.spyOn(postcodeUtils, 'validate');
       const toNormalisedSpy = jest.spyOn(postcodeUtils, 'toNormalised');
-      (geolocationService.nearest as jest.Mock).mockReturnValue(atfs);
+      const geolocationServiceMock = jest.spyOn(geolocationService, 'nearest').mockReturnValue(Promise.resolve(atfs));
 
       await search(reqMock, resMock, nextMock);
 
@@ -65,6 +66,7 @@ describe('Test search.controller', () => {
       );
       expect(validateSpy).toHaveBeenCalledWith(postcodeUpperCase);
       expect(validateSpy).toReturnWith([]);
+      expect(geolocationServiceMock).toHaveBeenCalledWith(reqMock, postcodeNormalisedStripped);
       expect(toNormalisedSpy).toHaveBeenCalledWith(postcodeUpperCase);
       expect(toNormalisedSpy).toReturnWith(postcodeNormalised);
     });
