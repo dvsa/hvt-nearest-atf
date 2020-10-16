@@ -6,7 +6,7 @@
 
       <h2 class="govuk-heading-m">
         <a class="govuk-link" target="_blank" href="{{ data.url }}">{{ data.name }}</a>
-        <span class="govuk-hint">{{ data.distance }} miles away</span>
+        <span class="govuk-hint">{{ data.distance | to1DP }} miles away</span>
       </h2>
 
       <div class="govuk-grid-row">
