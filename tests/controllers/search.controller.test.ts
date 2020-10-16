@@ -51,7 +51,7 @@ describe('Test search.controller', () => {
     it('should render search/results page with proper params when valid postcode provided', async () => {
       const postcode = 'po167gz';
       const postcodeUpperCase = postcode.toUpperCase();
-      const postodeNomalised = 'PO16 7GZ';
+      const postodeNormalised = 'PO16 7GZ';
       reqMock.query = { postcode };
       const validateSpy = jest.spyOn(postcodeUtils, 'validate');
       const toNormalisedSpy = jest.spyOn(postcodeUtils, 'toNormalised');
@@ -61,12 +61,12 @@ describe('Test search.controller', () => {
 
       expect(renderSpy).toHaveBeenCalledWith(
         'search/results',
-        { search: postodeNomalised, data: atfs },
+        { search: postodeNormalised, data: atfs },
       );
       expect(validateSpy).toHaveBeenCalledWith(postcodeUpperCase);
       expect(validateSpy).toReturnWith([]);
       expect(toNormalisedSpy).toHaveBeenCalledWith(postcodeUpperCase);
-      expect(toNormalisedSpy).toReturnWith(postodeNomalised);
+      expect(toNormalisedSpy).toReturnWith(postodeNormalised);
     });
 
     it('should render search/show page with proper params when invalid postcode provided', async () => {
