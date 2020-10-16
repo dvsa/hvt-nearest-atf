@@ -5,7 +5,6 @@ import { geolocationService } from '../../src/services/geolocation.service';
 import { getAtfs } from '../data-providers/atf.dataProvider';
 import { AuthorisedTestingFacility } from '../../src/models/authorisedTestingFacility.model';
 import { FormError, postcodeUtils } from '../../src/utils/postcode.util';
-import { logger } from '../../src/utils/logger.util';
 
 let apiRequestId: string;
 let awsRequestId: string;
@@ -37,10 +36,16 @@ describe('Test search.controller', () => {
   });
 
   describe('search method', () => {
+    let renderSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      renderSpy = jest.spyOn(resMock, 'render');
+    });
+
     it('should render search/show page when no postcode provided', async () => {
       await search(reqMock, resMock, nextMock);
 
-      expect(resMock.render).toHaveBeenCalledWith('search/show');
+      expect(renderSpy).toHaveBeenCalledWith('search/show');
     });
 
     it('should render search/results page with proper params when valid postcode provided', async () => {
@@ -54,7 +59,7 @@ describe('Test search.controller', () => {
 
       await search(reqMock, resMock, nextMock);
 
-      expect(resMock.render).toHaveBeenCalledWith(
+      expect(renderSpy).toHaveBeenCalledWith(
         'search/results',
         { search: postodeNomalised, data: atfs },
       );
@@ -71,9 +76,9 @@ describe('Test search.controller', () => {
 
       await search(reqMock, resMock, nextMock);
 
-      expect(resMock.render).toHaveBeenCalledWith(
+      expect(renderSpy).toHaveBeenCalledWith(
         'search/show',
-        { hasError: true, formErrors: expect.anything() },
+        { hasError: true, formErrors: expect.anything() as Array<FormError> },
       );
       expect(validateSpy).toHaveBeenCalledWith(postcode.toUpperCase());
       expect(validateSpy).toReturnWith(expect.anything());
