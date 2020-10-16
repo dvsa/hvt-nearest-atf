@@ -1,5 +1,14 @@
-.dvsa-panel__highlight{
+.dvsa-panel__highlight {
   background-color: govuk-colour("light-grey");
   padding: 1em;
   margin-bottom: 1em;
+}
+
+.dvsa-result-heading {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.dvsa-no-margin-top {
+  margin-top: 0px !important;
 }

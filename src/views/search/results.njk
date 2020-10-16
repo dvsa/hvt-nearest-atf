@@ -1,7 +1,24 @@
+{% from "includes/atf-search-result.njk" import renderAtf %}
+{% from "govuk-frontend/govuk/components/details/macro.njk" import govukDetails %}
+
 {% extends "layouts/layout.njk" %}
 
 {% block content %}
     <h1 class="govuk-heading-xl">
       Test centres near {{ search | escape }}
     </h1>
+
+    <div class="search-results">
+        <hr>
+        {% for atf in data %}
+            {{ renderAtf(atf) }}
+            <hr class="clear">
+        {% endfor %}
+    </div>
+
+
+    {{ govukDetails({
+      summaryText: "Report that you cannot book an HGV, bus or trailer MOT test",
+      html: "<a class='govuk-link' href='https://smartsurvey.com/''>Tell DVSA</a> if you cannot find a test centre before your HGV, bus or trailer MOT is due."
+    }) }}
 {% endblock %}
