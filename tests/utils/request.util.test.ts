@@ -8,7 +8,7 @@ let apiRequestId: string;
 let awsRequestId: string;
 let requestMock: Request;
 
-describe('Test axios', () => {
+describe('Test request.util', () => {
   beforeAll(() => {
     url = 'http://test-url.com';
     apiRequestId = v4();

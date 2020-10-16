@@ -6,20 +6,22 @@ interface FieldError {
 }
 export interface FormError {
   heading: string,
-  errors: FieldError[]
+  errors: FieldError[],
+  errorMessage: string,
 }
 
 const isValidPostcode = (data: string): boolean => (data.length === 0 ? false : isValid(data));
 
 const validate = (data: string): Array<FormError> => {
   const postcodeError: FormError = {
-    heading: 'This isn\'t a valid postcode.',
+    heading: 'There is a problem',
     errors: [
       {
         field: 'postcode',
-        message: 'Check it and enter again',
+        message: 'Enter a postcode, like SW1A 2AA',
       },
     ],
+    errorMessage: 'Enter a postcode in the correct format',
   };
   return isValidPostcode(data.toString().trim()) ? [] : [postcodeError];
 };

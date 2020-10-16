@@ -9,16 +9,18 @@
 
     <div class="grid-row">
         <div class="column-two-thirds">
+
+            {% if hasError %}
+                {{ error.summary(formErrors) }}
+            {% endif %}
+
             <h1 class="govuk-heading-xl">
                 Find a test centre for an HGV, bus or trailer MOT
             </h1>
             <p class="govuk-body">Depending on the test centre, you can book online or by phone.</p>
 
-             {% if hasError %}
-              {{ error.summary(formErrors) }}
-            {% endif %}
             <div class="postcode-search-form" data-module="track-submit" data-track-category="postcodeSearch:place" data-track-action="postcodeSearchStarted">
-                <form action="" method="post" id="local-locator-form" class="location-form">
+                <form action="" method="GET" id="local-locator-form" class="location-form">
 
                     {% call govukFieldset({
                         classes:"dvsa-panel__highlight",    
@@ -27,21 +29,40 @@
                             classes: "govuk-fieldset__legend--m govuk-visually-hidden",
                             isPageHeading: false
                         }
-                        }) %}
+                    }) %}
 
-                    {{ govukInput({
-                        label: {
-                            text: "Enter a postcode",
-                            classes: "govuk-label",
-                            isPageHeading: false
-                            
-                        },
-                        hint: {
-                            text: "For example SW1A 2AA"
-                        },
-                        id: "postcode",
-                        name: "postcode"
+                    {% if hasError %}
+                        {{ govukInput({
+                            label: {
+                                text: "Enter a postcode",
+                                classes: "govuk-label",
+                                isPageHeading: false
+                                
+                            },
+                            hint: {
+                                text: "For example SW1A 2AA"
+                            },
+                            id: "postcode",
+                            name: "postcode",
+                            errorMessage: {
+                                text: formErrors.errorMessage
+                            }
                         }) }}
+                    {% else %}
+                        {{ govukInput({
+                            label: {
+                                text: "Enter a postcode",
+                                classes: "govuk-label",
+                                isPageHeading: false
+                                
+                            },
+                            hint: {
+                                text: "For example SW1A 2AA"
+                            },
+                            id: "postcode",
+                            name: "postcode"
+                        }) }}
+                    {% endif %}
 
                     {{ govukButton({
                         text: "Find",

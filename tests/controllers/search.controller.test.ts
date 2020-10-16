@@ -1,27 +1,32 @@
 import { v4 } from 'uuid';
 import { Request, NextFunction, Response } from 'express';
-import { search, results } from '../../src/controllers/search.controller';
-import { AuthorisedTestingFacility } from '../../src/models/authorisedTestingFacility.model';
+import { search } from '../../src/controllers/search.controller';
 import { geolocationService } from '../../src/services/geolocation.service';
+import { getAtfs } from '../data-providers/atf.dataProvider';
+import { AuthorisedTestingFacility } from '../../src/models/authorisedTestingFacility.model';
+import { FormError, postcodeUtils } from '../../src/utils/postcode.util';
+import { logger } from '../../src/utils/logger.util';
 
 let apiRequestId: string;
 let awsRequestId: string;
 let correlationId: string;
-let postcode: string;
 let reqMock: Request;
 let resMock: Response;
 let nextMock: NextFunction;
+
+const atfs: AuthorisedTestingFacility[] = getAtfs(2);
+
+geolocationService.nearest = jest.fn();
 
 describe('Test search.controller', () => {
   beforeEach(() => {
     apiRequestId = v4();
     awsRequestId = v4();
     correlationId = awsRequestId;
-    postcode = 'BT12 6FE';
     reqMock = <Request> <unknown> {
       apiGateway: { event: { requestContext: { requestId: apiRequestId } } },
       app: { locals: { correlationId } },
-      body: { postcode },
+      query: {},
     };
     resMock = <Response> <unknown> { redirect: jest.fn(), render: jest.fn(), status: jest.fn().mockReturnThis() };
     nextMock = jest.fn();
@@ -32,25 +37,46 @@ describe('Test search.controller', () => {
   });
 
   describe('search method', () => {
-    it('should call res.redirect() with proper params', () => {
-      const renderMock = jest.spyOn(resMock, 'render');
+    it('should render search/show page when no postcode provided', async () => {
+      await search(reqMock, resMock, nextMock);
 
-      search(reqMock, resMock, nextMock);
-
-      expect(renderMock).toHaveBeenCalledWith('search/show');
+      expect(resMock.render).toHaveBeenCalledWith('search/show');
     });
-  });
 
-  describe('results method', () => {
-    it('should call res.render() with proper params', async () => {
-      const geolcationServiceMock = jest.spyOn(geolocationService, 'nearest');
-      geolcationServiceMock.mockReturnValue(Promise.resolve(<AuthorisedTestingFacility[]> []));
-      const renderMock = jest.spyOn(resMock, 'render');
+    it('should render search/results page with proper params when valid postcode provided', async () => {
+      const postcode = 'po167gz';
+      const postcodeUpperCase = postcode.toUpperCase();
+      const postodeNomalised = 'PO16 7GZ';
+      reqMock.query = { postcode };
+      const validateSpy = jest.spyOn(postcodeUtils, 'validate');
+      const toNormalisedSpy = jest.spyOn(postcodeUtils, 'toNormalised');
+      (geolocationService.nearest as jest.Mock).mockReturnValue(atfs);
 
-      await results(reqMock, resMock, nextMock);
+      await search(reqMock, resMock, nextMock);
 
-      expect(geolcationServiceMock).toHaveBeenCalledWith(reqMock, postcode);
-      expect(renderMock).toHaveBeenCalledWith('search/results', { data: [], search: postcode });
+      expect(resMock.render).toHaveBeenCalledWith(
+        'search/results',
+        { search: postodeNomalised, data: atfs },
+      );
+      expect(validateSpy).toHaveBeenCalledWith(postcodeUpperCase);
+      expect(validateSpy).toReturnWith([]);
+      expect(toNormalisedSpy).toHaveBeenCalledWith(postcodeUpperCase);
+      expect(toNormalisedSpy).toReturnWith(postodeNomalised);
+    });
+
+    it('should render search/show page with proper params when invalid postcode provided', async () => {
+      const postcode = 'i am an invalid postcode';
+      reqMock.query = { postcode };
+      const validateSpy = jest.spyOn(postcodeUtils, 'validate');
+
+      await search(reqMock, resMock, nextMock);
+
+      expect(resMock.render).toHaveBeenCalledWith(
+        'search/show',
+        { hasError: true, formErrors: expect.anything() },
+      );
+      expect(validateSpy).toHaveBeenCalledWith(postcode.toUpperCase());
+      expect(validateSpy).toReturnWith(expect.anything());
     });
   });
 });

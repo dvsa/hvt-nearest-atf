@@ -3,39 +3,30 @@ import { logger } from '../utils/logger.util';
 import { postcodeUtils, FormError } from '../utils/postcode.util';
 import { geolocationService } from '../services/geolocation.service';
 
-export const search = (req: Request, res: Response, next: NextFunction): void => {
+export const search = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    return res.render('search/show');
-  } catch (error) {
-    logger.warn(req, 'error returning search page');
-    return next(error);
-  }
-};
-
-export const results = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    // eslint-disable-next-line
-    const postcode: string = req.body.postcode.toString().toUpperCase() || '';
-    logger.info(req, `search for postcode ${postcode}`);
-    const errors: Array<FormError> = postcodeUtils.validate(postcode);
-
-    let viewModel = { };
-    if (errors.length !== 0) {
-      viewModel = {
-        hasError: true,
-        formErrors: errors[0],
-      };
-      return res.render('search/show', viewModel);
+    if (req.query.postcode === undefined) {
+      return res.render('search/show');
     }
 
-    viewModel = {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const postcode: string = (<string> req.query.postcode || '').toUpperCase();
+    logger.info(req, `Search for postcode ${postcode}`);
+    const errors: Array<FormError> = postcodeUtils.validate(postcode);
+
+    if (errors.length !== 0) {
+      return res.render('search/show', {
+        hasError: true,
+        formErrors: errors[0],
+      });
+    }
+
+    return res.render('search/results', {
       search: postcodeUtils.toNormalised(postcode),
       data: await geolocationService.nearest(req, postcode),
-    };
-    return res.render('search/results', viewModel);
+    });
   } catch (error) {
-    logger.warn(req, 'error returning results page');
+    logger.warn(req, 'Error while rendering search page');
     return next(error);
   }
 };

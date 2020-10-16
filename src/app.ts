@@ -42,4 +42,17 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use(routes);
 
+// Error handling
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(404).render('error/not-found');
+  next();
+});
+
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+  const errorString: string = JSON.stringify(error, Object.getOwnPropertyNames(error));
+  const context = { error: process.env.NODE_ENV === 'development' ? errorString : '' };
+  res.status(500).render('error/service-unavailable', context);
+  next();
+});
+
 export default app;
