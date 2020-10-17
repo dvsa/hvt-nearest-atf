@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { logger } from '../utils/logger.util';
 import { postcodeUtils, FormError } from '../utils/postcode.util';
 import { geolocationService } from '../services/geolocation.service';
+import { AuthorisedTestingFacility } from '../models/authorisedTestingFacility.model';
 
 export const search = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -21,9 +22,11 @@ export const search = async (req: Request, res: Response, next: NextFunction): P
       });
     }
 
+    const atfs: AuthorisedTestingFacility[] = await geolocationService.nearest(req, postcode.replace(/\s+/g, ''));
+
     return res.render('search/results', {
       search: postcodeUtils.toNormalised(postcode),
-      data: await geolocationService.nearest(req, postcode.replace(/\s+/g, '')),
+      data: atfs,
     });
   } catch (error) {
     logger.warn(req, 'Error while rendering search page');

@@ -19,7 +19,7 @@ Resources:
       MemorySize: 1024
       Role: !GetAtt LambdaExecutionRole.Arn
       Runtime: nodejs12.x
-      Timeout: 5
+      Timeout: 10
       Events:
         ProxyApiRoot:
           Type: Api
