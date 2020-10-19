@@ -6,7 +6,7 @@
 
       <h2 class="govuk-heading-m">
         <a class="govuk-link" target="_blank" href="{{ data.url }}">{{ data.name }}</a>
-        <span class="govuk-hint">{{ data.distance | to1DP }} miles away</span>
+        <span class="govuk-hint">{{ data.geoLocation.distance | to1DP }} miles away</span>
       </h2>
 
       <div class="govuk-grid-row">
@@ -14,15 +14,15 @@
 
           <p class="dvsa-no-margin-top">
             <span class="dvsa-address">
-              {{ data.address1 }}
+              {{ data.address.line1 }}
               <br>
-              {% if data.address2 %}
-                {{ data.address2 }}
+              {% if data.address.line2 %}
+                {{ data.address.line2 }}
                 <br>
               {% endif %}
             </span>
             <span class="dvsa-town">{{ data.town }}</span><br>
-            <span class="dvsa-postcode">{{ data.postcode }}</span>
+            <span class="dvsa-postcode">{{ data.address.postcode }}</span>
           </p>
 
           <p>

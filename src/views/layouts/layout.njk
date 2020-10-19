@@ -1,18 +1,9 @@
 {# Example that changes every setting in the template #}
-
-<<<<<<< HEAD
-{% from "../../govuk-frontend/govuk/components/back-link/macro.njk" import govukBackLink %}
-{% from "../../govuk-frontend/govuk/components/skip-link/macro.njk" import govukSkipLink %}
-{% from "../../govuk-frontend/govuk/components/header/macro.njk" import govukHeader %}
-{% from "../../govuk-frontend/govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
-{% from "../../govuk-frontend/govuk/components/footer/macro.njk" import govukFooter %}
-=======
 {% from "govuk-frontend/govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk-frontend/govuk/components/skip-link/macro.njk" import govukSkipLink %}
 {% from "govuk-frontend/govuk/components/header/macro.njk" import govukHeader %}
 {% from "govuk-frontend/govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk-frontend/govuk/components/footer/macro.njk" import govukFooter %}
->>>>>>> feature/RTA-35-search-screen
 
 {% set htmlClasses = "app-html-class" %}
 {% set htmlLang = "en" %}
@@ -30,11 +21,8 @@
 
 <head>
   <meta charset="utf-8">
-<<<<<<< HEAD
-<title>{% block pageTitle %}{{ pageSettings.serviceName | default('GOV.UK') }}{% endblock %}</title>
-=======
+
 <title>{% block pageTitle %}Find a test centre for an HGV, bus or trailer MOT{% endblock %}</title>
->>>>>>> feature/RTA-35-search-screen
 
 {% block headIcons %}
   <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon" />
