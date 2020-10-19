@@ -1,51 +1,12 @@
-<<<<<<< HEAD
-{% extends "layouts/layout.njk" %}
-{% from "includes/pagination/macro.njk" import pagination %}
-=======
 {% from "includes/atf-search-result.njk" import renderAtf %}
 {% from "govuk-frontend/govuk/components/details/macro.njk" import govukDetails %}
 
 {% extends "layouts/layout.njk" %}
 
->>>>>>> feature/RTA-35-search-screen
 {% block content %}
     <h1 class="govuk-heading-xl">
       Test centres near {{ search | escape }}
     </h1>
-<<<<<<< HEAD
-    <div class="govuk-grid-row">
-       {{ pagination({
-                total: 50,
-                q: search,
-                rows: [
-                    {   
-                        page: 1,
-                        classes:['test']
-                    },
-                    { 
-                        page: 2,
-                        current:true
-                    },
-                    { 
-                        page: 3,
-                        href: '../../search/results?q='+search+'&page=3'
-                      
-                    },
-                    { 
-                        page: 4,
-                        href: '?page=4'
-                    },
-                    { 
-                        page: 5,
-                        href: '?page=5'
-                      
-                    }
-                ]
-            }) 
-        }}
-    </div>
-{% endblock %}
-=======
 
     <div class="search-results">
         <hr>
@@ -61,4 +22,3 @@
       html: "<a class='govuk-link' href='https://smartsurvey.com/''>Tell DVSA</a> if you cannot find a test centre before your HGV, bus or trailer MOT is due."
     }) }}
 {% endblock %}
->>>>>>> feature/RTA-35-search-screen
