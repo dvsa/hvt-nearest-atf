@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import { geolocatonService } from '../../src/services/geolocation.service';
-
-describe('test the geolocation service', () => {
-  test('nearest service returns data', () => {
-    expect(geolocatonService.nearest('__TEST__')).toEqual('__TEST__');
-=======
 import { Request } from 'express';
 import { AuthorisedTestingFacility } from '../../src/models/authorisedTestingFacility.model';
 import { geolocationService } from '../../src/services/geolocation.service';
@@ -52,6 +45,5 @@ describe('Test geolocation.service', () => {
         `Could not retrieve ATFs nearest to postcode [${postcode}] details, error: ${expectedErrorString}`,
       );
     });
->>>>>>> feature/RTA-35-search-screen
   });
 });

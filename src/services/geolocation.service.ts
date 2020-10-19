@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-const nearest = (data:string) : string => data;
-export const geolocatonService = {
-=======
 import { Request } from 'express';
 import { AxiosResponse } from 'axios';
 import { request } from '../utils/request.util';
@@ -23,6 +19,5 @@ const nearest = async (req: Request, postcode: string): Promise<AuthorisedTestin
 };
 
 export const geolocationService = {
->>>>>>> feature/RTA-35-search-screen
   nearest,
 };

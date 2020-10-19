@@ -42,8 +42,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use(routes);
 
-<<<<<<< HEAD
-=======
 // Error handling
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).render('error/not-found');
@@ -57,5 +55,4 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
->>>>>>> feature/RTA-35-search-screen
 export default app;
