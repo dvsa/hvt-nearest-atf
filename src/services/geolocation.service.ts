@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import { request } from '../utils/request.util';
 import { AuthorisedTestingFacility } from '../models/authorisedTestingFacility.model';
 import { logger } from '../utils/logger.util';
-import { PagedResponse } from '../models/pagedResponse';
+import { PagedResponse } from '../models/pagedResponse.model';
 
 const nearest = async (req: Request, postcode: string): Promise<AuthorisedTestingFacility[]> => {
   logger.info(req, `Retrieving ATFs nearest to postcode [${postcode}]`);

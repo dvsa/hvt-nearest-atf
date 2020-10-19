@@ -1,22 +1,15 @@
-export interface Availability {
-  startDate: string;
-  endDate: string;
-  isAvailable?: boolean;
-  lastUpdated?: string;
-}
+import { Address } from './address.model';
+import { Availability } from './availability.model';
+import { GeoLocation } from './geoLocation.model';
 
 export interface AuthorisedTestingFacility {
   id: string;
   name: string;
-  url: string;
-  distance: number;
-  postcode: string;
-  address1: string;
-  address2: string;
-  town: string;
-  availability: Availability;
   phone: string;
   email: string;
+  address: Address,
+  geoLocation: GeoLocation
+  availability: Availability;
   inclusions: string[];
   exclusions: string[];
   restrictions: string[];
