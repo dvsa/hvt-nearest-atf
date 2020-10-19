@@ -1,0 +1,20 @@
+{% macro pagination(params) %}
+<nav role="navigation" aria-label="Pagination">
+{% set itemcount = (params.rows | length) -1 %}
+{% set start = (params.rows[0].page) %}
+{% set search = (params.q | urlencode) %}
+<div class="pagination__summary">Showing {{ start }} to {{ start + itemcount }} of {{ params.total }} results</div>
+    <ul class="pagination pagination_list-items">
+      {% set currentPage = ((params.rows | selectattr("current"))[0].page | int) %}
+      {% set previous = currentPage - 1 %}
+      {% set next = currentPage + 1 %}
+      {% if currentPage !== (params.rows[0].page | int) %}
+        <li class="pagination__item"><a class="pagination__link" href="?q={{search}}&page={{ previous }}" aria-label="Previous page"><span aria-hidden="true" role="presentation">«</span> Previous</a></li>
+       {% endif %}
+         {% include "./__template.njk" %}
+       {% if currentPage !== params.rows[itemcount].page %}
+        <li class="pagination__item"><a class="pagination__link" href="?q={{search}}&page={{ next }}" aria-label="Next page">Next <span aria-hidden="true" role="presentation">»</span></a></li>
+      {% endif %}
+    </ul>
+</nav>
+{% endmacro %}

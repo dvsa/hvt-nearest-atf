@@ -1,0 +1,6 @@
+{% for row in params.rows %}
+ {% if row %}
+    <li class="pagination__item  {%- if row.classes %} {{ row.classes }}{% endif %}"><a class="pagination__link {% if currentPage == row.page %} pagination__current {% endif %}" href="{% if row.href %} {{row.href}} {% else %} ?q={{search}}&page={{row.page}}{% endif %}" aria-label="Page {{row.page}}">{{row.page}}</a></li>
+{% endif %}
+{% endfor %}
+   
