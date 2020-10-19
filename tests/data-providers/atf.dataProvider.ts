@@ -10,7 +10,12 @@ export const getAtf = (id: string): AuthorisedTestingFacility => (<AuthorisedTes
   name: 'Beier, Jacobi and Kautzer',
   phone: '01332 825303',
   email: 'foo@bar.com',
-  address: { line1: '1 somewhere street', line2: 'somewhere town', postcode: 'AB12 3CD' },
+  address: {
+    line1: 'Flat 12',
+    line2: 'Somewhere Street',
+    town: 'Somewhere Town',
+    postcode: 'AB12 3CD',
+  },
   geoLocation: { lat: 1, long: 2 },
   restrictions: ['door height 4.3 metres', 'maximum vehicle length 12.5 metres'],
   exclusions: ['LEZ phase 3', 'petrol emissions'],
