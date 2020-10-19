@@ -1,7 +1,11 @@
 {% macro summary(fail) %}
   <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
     <h2 class="govuk-error-summary__title" id="error-summary-title">
+<<<<<<< HEAD
       {{fail.heading}}
+=======
+      {{ fail.heading }}
+>>>>>>> feature/RTA-35-search-screen
     </h2>
     <div class="govuk-error-summary__body">
       <ul class="govuk-list govuk-error-summary__list">
@@ -9,7 +13,11 @@
           <li>
             <a href="#error{{ error.field | capitalize }}">{{ error.message }}</a>
           </li>
+<<<<<<< HEAD
           {% endfor%}
+=======
+        {% endfor %}
+>>>>>>> feature/RTA-35-search-screen
       </ul>
     </div>
   </div>
@@ -20,4 +28,8 @@
     <span class="govuk-visually-hidden">Error:</span>
     {{ message }}
   </span>
+<<<<<<< HEAD
 {% endmacro %}
+=======
+{% endmacro %}
+>>>>>>> feature/RTA-35-search-screen

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends "layouts/layout.njk" %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
@@ -57,3 +58,88 @@
 </div>
 
 {% endblock %}
+=======
+{% from "govuk-frontend/govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk-frontend/govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk-frontend/govuk/components/button/macro.njk" import govukButton %}
+{% import "includes/errors.njk" as error %}
+
+{% extends "layouts/layout.njk" %}
+
+{% block content %}
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      {% if hasError %}
+        {{ error.summary(formErrors) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-xl">
+        Find a test centre for an HGV, bus or trailer MOT
+      </h1>
+      <p class="govuk-body">Depending on the test centre, you can book online or by phone.</p>
+
+      <div class="postcode-search-form" data-module="track-submit" data-track-category="postcodeSearch:place" data-track-action="postcodeSearchStarted">
+        <form action="" method="GET" id="local-locator-form" class="location-form">
+
+          {% call govukFieldset({
+            classes:"dvsa-panel__highlight",    
+            legend: {
+              text: "Postcode lookup",
+              classes: "govuk-fieldset__legend--m govuk-visually-hidden",
+              isPageHeading: false
+            }
+          }) %}
+
+          {% if hasError %}
+            {{ govukInput({
+              label: {
+                text: "Enter a postcode",
+                classes: "govuk-label",
+                isPageHeading: false
+              },
+              hint: {
+                text: "For example SW1A 2AA"
+              },
+              id: "postcode",
+              name: "postcode",
+              errorMessage: {
+                text: formErrors.errorMessage
+              }
+            }) }}
+          {% else %}
+            {{ govukInput({
+              label: {
+                text: "Enter a postcode",
+                classes: "govuk-label",
+                isPageHeading: false
+              },
+              hint: {
+                  text: "For example SW1A 2AA"
+              },
+              id: "postcode",
+              name: "postcode"
+            }) }}
+          {% endif %}
+
+          {{ govukButton({
+            text: "Find",
+            type: "submit",
+            attributes: {
+              id: "postcode-find-button"
+            }
+          }) }}
+          
+          <p class="govuk-body">
+            <a class="govuk-link" target="_blank" id="postcode-finder-link" rel="external" href="http://www.royalmail.com/find-a-postcode">Find a postcode on Royal Mail's postcode finder</a>
+          </p>
+          {% endcall %}
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+>>>>>>> feature/RTA-35-search-screen

@@ -8,7 +8,11 @@ let apiRequestId: string;
 let awsRequestId: string;
 let requestMock: Request;
 
+<<<<<<< HEAD
 describe('Test axios', () => {
+=======
+describe('Test request.util', () => {
+>>>>>>> feature/RTA-35-search-screen
   beforeAll(() => {
     url = 'http://test-url.com';
     apiRequestId = v4();
@@ -28,6 +32,7 @@ describe('Test axios', () => {
 
     expect(axiosMock).toHaveBeenCalledWith(url, expectedHeaders);
   });
+<<<<<<< HEAD
 
   test('put() sends http request to correct url with expected data and headers', async () => {
     const axiosMock = jest.spyOn(axios, 'put');
@@ -39,4 +44,6 @@ describe('Test axios', () => {
 
     expect(axiosMock).toHaveBeenCalledWith(url, requestData, expectedHeaders);
   });
+=======
+>>>>>>> feature/RTA-35-search-screen
 });

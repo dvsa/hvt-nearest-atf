@@ -4,6 +4,11 @@ import { Environment } from 'nunjucks';
 import { setUpNunjucks } from '../../src/utils/viewHelper.util';
 
 type DateFunctionType = (date: string) => string;
+<<<<<<< HEAD
+=======
+// eslint-disable-next-line @typescript-eslint/naming-convention
+type to1DPFunctionType = (numeral: number) => string;
+>>>>>>> feature/RTA-35-search-screen
 
 const app: Express = express();
 const nunjucks: Environment = setUpNunjucks(app);
@@ -16,7 +21,11 @@ jest.mock('date-fns-tz', () => ({
   utcToZonedTime: jest.fn(),
 }));
 
+<<<<<<< HEAD
 describe('Test viewHelper', () => {
+=======
+describe('Test viewHelper.util', () => {
+>>>>>>> feature/RTA-35-search-screen
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -44,4 +53,19 @@ describe('Test viewHelper', () => {
       expect(format).toHaveBeenCalledWith(new Date(someDateIsoString), 'EEEE d MMMM yyyy \'at\' h:mmaaaaa\'m\'');
     });
   });
+<<<<<<< HEAD
+=======
+
+  describe('to1DP filter function', () => {
+    it('should format numeral to 1 DP', () => {
+      const givenNumerals: number[] = [1, 2.0, 3.14, 4.6123, 4.99999];
+      const expectedNumerals: string[] = ['1.0', '2.0', '3.1', '4.6', '5.0'];
+      const to1DP: to1DPFunctionType = <to1DPFunctionType> nunjucks.getFilter('to1DP');
+
+      givenNumerals.forEach((numeral, index) => {
+        expect(to1DP(numeral)).toBe(expectedNumerals[index]);
+      });
+    });
+  });
+>>>>>>> feature/RTA-35-search-screen
 });

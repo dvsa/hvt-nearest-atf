@@ -1,10 +1,18 @@
 {# Example that changes every setting in the template #}
 
+<<<<<<< HEAD
 {% from "../../govuk-frontend/govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "../../govuk-frontend/govuk/components/skip-link/macro.njk" import govukSkipLink %}
 {% from "../../govuk-frontend/govuk/components/header/macro.njk" import govukHeader %}
 {% from "../../govuk-frontend/govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "../../govuk-frontend/govuk/components/footer/macro.njk" import govukFooter %}
+=======
+{% from "govuk-frontend/govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk-frontend/govuk/components/skip-link/macro.njk" import govukSkipLink %}
+{% from "govuk-frontend/govuk/components/header/macro.njk" import govukHeader %}
+{% from "govuk-frontend/govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "govuk-frontend/govuk/components/footer/macro.njk" import govukFooter %}
+>>>>>>> feature/RTA-35-search-screen
 
 {% set htmlClasses = "app-html-class" %}
 {% set htmlLang = "en" %}
@@ -22,7 +30,11 @@
 
 <head>
   <meta charset="utf-8">
+<<<<<<< HEAD
 <title>{% block pageTitle %}{{ pageSettings.serviceName | default('GOV.UK') }}{% endblock %}</title>
+=======
+<title>{% block pageTitle %}Find a test centre for an HGV, bus or trailer MOT{% endblock %}</title>
+>>>>>>> feature/RTA-35-search-screen
 
 {% block headIcons %}
   <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon" />
@@ -51,9 +63,15 @@
 {% block header %}
 
   {{ govukHeader({
+<<<<<<< HEAD
     homepageUrl: "/",
     containerClasses: "govuk-width-container",
     serviceName: pageSettings.serviceName | default('GOV.UK'),
+=======
+    homepageUrl: "#",
+    containerClasses: "govuk-width-container",
+    serviceName: "Find a test centre for an HGV, bus or trailer MOT",
+>>>>>>> feature/RTA-35-search-screen
     serviceUrl: "#"
   }) }}
   
@@ -67,6 +85,7 @@
 {% endblock %}
 
 {% block beforeContent %}
+<<<<<<< HEAD
   {% if not pageSettings.hideNewServiceBanner %}
     {{ govukPhaseBanner({
       tag: {
@@ -81,6 +100,19 @@
       text: "Back"
     }) }}
   {% endif %}
+=======
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+
+  {{ govukBackLink({
+    href: "#",
+    text: "Back"
+  }) }}
+>>>>>>> feature/RTA-35-search-screen
 {% endblock %}
 
 {% block content %}
@@ -118,8 +150,11 @@
 {% endblock %}
 </body>
 </html>
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> feature/RTA-35-search-screen

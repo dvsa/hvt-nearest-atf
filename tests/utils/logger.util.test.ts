@@ -6,7 +6,11 @@ let apiRequestId: string;
 let awsRequestId: string;
 let requestMock: Request;
 
+<<<<<<< HEAD
 describe('Test logger', () => {
+=======
+describe('Test logger.util', () => {
+>>>>>>> feature/RTA-35-search-screen
   beforeAll(() => {
     apiRequestId = v4();
     awsRequestId = v4();

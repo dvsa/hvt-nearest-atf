@@ -1,61 +1,35 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { logger } from '../utils/logger.util';
-import { PageSettings } from '../models/pageSettings.model';
 import { postcodeUtils, FormError } from '../utils/postcode.util';
-import { geolocatonService } from '../services/geolocation.service';
+import { geolocationService } from '../services/geolocation.service';
+import { AuthorisedTestingFacility } from '../models/authorisedTestingFacility.model';
 
-const pageSettings: PageSettings = {
-  serviceName: 'Find a test centre for an HGV, bus or trailer MOT',
-  hideNewServiceBanner: false,
-  hideBackLink: false,
-};
-
-export const search = (req: Request, res: Response): void => {
+export const search = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    return res.render('search/show', {
-      pageSettings,
-    });
-  } catch (error) {
-    logger.info(req, 'error returning search page');
-    throw error;
-  }
-};
+    if (req.query.postcode === undefined) {
+      return res.render('search/show');
+    }
 
-export const show = (req: Request, res: Response): void => {
-  try {
-    // eslint-disable-next-line
-    const postcode:string = req.body.postcode.toString().toUpperCase() || '';
-    logger.info(req, `search for postcode ${postcode}`);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const postcode: string = (<string> req.query.postcode || '').toUpperCase();
+    logger.info(req, `Search for postcode ${postcode}`);
     const errors: Array<FormError> = postcodeUtils.validate(postcode);
+
     if (errors.length !== 0) {
-      const viewModel = Object.assign(pageSettings, {
+      return res.render('search/show', {
         hasError: true,
         formErrors: errors[0],
       });
-      return res.render('search/show', viewModel);
     }
-    return res.redirect(302, `search/results/?q=${encodeURI(postcode)}`);
-  } catch (error) {
-    logger.info(req, 'error returning search page with error');
-    throw error;
-  }
-};
 
-export const results = (req: Request, res: Response): void => {
-  try {
-    let postcode = '';
-    if (req.query.q !== undefined && req.query.q !== '') {
-      postcode = decodeURI(req.query.q.toString());
-      logger.info(req, `results for postcode ${postcode}`);
-      const viewModel = Object.assign(pageSettings, {
-        search: postcodeUtils.toNormalised(postcode),
-        data: geolocatonService.nearest(postcode),
-      });
-      return res.render('search/results', viewModel);
-    }
-    return res.redirect(302, '/');
+    const atfs: AuthorisedTestingFacility[] = await geolocationService.nearest(req, postcode.replace(/\s+/g, ''));
+
+    return res.render('search/results', {
+      search: postcodeUtils.toNormalised(postcode),
+      data: atfs,
+    });
   } catch (error) {
-    logger.info(req, 'error returning search page with error');
-    throw error;
+    logger.warn(req, 'Error while rendering search page');
+    return next(error);
   }
 };

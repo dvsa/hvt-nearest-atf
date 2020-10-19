@@ -16,15 +16,15 @@ A Serverless Node Express application for showing nearest atf data .
 - `cp .env.development .env`
 - `npm run build:dev`
 - `npm run start:dev`
-- go to `http://localhost:3002/` on browser
+- go to `http://localhost:3007/` on browser
 
 
 **Debug Lambdas Locally (VS Code only)**
 
 - Run lambdas in debug mode: `npm run start:dev -- -d 5858`
-- Add a breakpoint to the lambda being tested (`src/controllers/index.controller.ts`)
+- Add a breakpoint to the lambda being tested (`src/controllers/search.controller.ts`)
 - Run the debug config from VS Code that corresponds to lambda being tested (`LambdaFunction`)
-- Send an HTTP request to the lambda's URI (`curl --request GET localhost:3002`)
+- Send an HTTP request to the lambda's URI (`curl --request GET localhost:3007`)
 
 
 **Test Locally**
