@@ -63,15 +63,9 @@
 {% block header %}
 
   {{ govukHeader({
-<<<<<<< HEAD
-    homepageUrl: "/",
-    containerClasses: "govuk-width-container",
-    serviceName: pageSettings.serviceName | default('GOV.UK'),
-=======
     homepageUrl: "#",
     containerClasses: "govuk-width-container",
     serviceName: "Find a test centre for an HGV, bus or trailer MOT",
->>>>>>> feature/RTA-35-search-screen
     serviceUrl: "#"
   }) }}
   
@@ -85,22 +79,6 @@
 {% endblock %}
 
 {% block beforeContent %}
-<<<<<<< HEAD
-  {% if not pageSettings.hideNewServiceBanner %}
-    {{ govukPhaseBanner({
-      tag: {
-        text: "alpha"
-      },
-      html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
-    }) }}
-  {% endif %}
-  {% if not pageSettings.hideBackLink %}
-    {{ govukBackLink({
-      href: "#",
-      text: "Back"
-    }) }}
-  {% endif %}
-=======
   {{ govukPhaseBanner({
     tag: {
       text: "alpha"
@@ -112,7 +90,6 @@
     href: "#",
     text: "Back"
   }) }}
->>>>>>> feature/RTA-35-search-screen
 {% endblock %}
 
 {% block content %}
@@ -150,11 +127,3 @@
 {% endblock %}
 </body>
 </html>
-<<<<<<< HEAD
-
-
-
-
-
-=======
->>>>>>> feature/RTA-35-search-screen
