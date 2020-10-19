@@ -1,0 +1,38 @@
+{% extends "layouts/layout.njk" %}
+{% from "includes/pagination/macro.njk" import pagination %}
+{% block content %}
+    <h1 class="govuk-heading-xl">
+      Test centres near {{ search | escape }}
+    </h1>
+    <div class="govuk-grid-row">
+       {{ pagination({
+                total: 50,
+                q: search,
+                rows: [
+                    {   
+                        page: 1,
+                        classes:['test']
+                    },
+                    { 
+                        page: 2,
+                        current:true
+                    },
+                    { 
+                        page: 3,
+                        href: '../../search/results?q='+search+'&page=3'
+                      
+                    },
+                    { 
+                        page: 4,
+                        href: '?page=4'
+                    },
+                    { 
+                        page: 5,
+                        href: '?page=5'
+                      
+                    }
+                ]
+            }) 
+        }}
+    </div>
+{% endblock %}

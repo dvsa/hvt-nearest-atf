@@ -1,0 +1,59 @@
+{% extends "layouts/layout.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% import "includes/errors.njk" as error %}
+{% block content %}
+
+    <div class="grid-row">
+        <div class="column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                Find a test centre for an HGV, bus or trailer MOT
+            </h1>
+            <p class="govuk-body">Depending on the test centre, you can book online or by phone.</p>
+
+             {% if hasError %}
+              {{ error.summary(formErrors) }}
+            {% endif %}
+            <div class="postcode-search-form" data-module="track-submit" data-track-category="postcodeSearch:place" data-track-action="postcodeSearchStarted">
+                <form action="" method="post" id="local-locator-form" class="location-form">
+
+                    {% call govukFieldset({
+                        classes:"dvsa-panel__highlight",    
+                        legend: {
+                            text: "Postcode lookup",
+                            classes: "govuk-fieldset__legend--m govuk-visually-hidden",
+                            isPageHeading: false
+                        }
+                        }) %}
+
+                    {{ govukInput({
+                        label: {
+                            text: "Enter a postcode",
+                            classes: "govuk-label",
+                            isPageHeading: false
+                            
+                        },
+                        hint: {
+                            text: "For example SW1A 2AA"
+                        },
+                        id: "postcode",
+                        name: "postcode"
+                        }) }}
+
+                    {{ govukButton({
+                        text: "Find",
+                        type: "submit"
+                    }) }}
+
+                    {% endcall %}
+                    <p class="govuk-body">
+                        <a class="govuk-link" target="_blank" id="postcode-finder-link" rel="external" href="http://www.royalmail.com/find-a-postcode">Find a postcode on Royal Mail's postcode finder</a>
+                    </p>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
