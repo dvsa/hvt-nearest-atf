@@ -76,7 +76,8 @@
 
   {{ govukBackLink({
     href: "#",
-    text: "Back"
+    text: "Back",
+    attributes: { onclick: "goBack();return false;" }
   }) }}
 {% endblock %}
 
