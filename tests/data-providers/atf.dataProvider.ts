@@ -10,6 +10,7 @@ export const getAtf = (id: string): AuthorisedTestingFacility => (<AuthorisedTes
   name: 'Beier, Jacobi and Kautzer',
   phone: '01332 825303',
   email: 'foo@bar.com',
+  url: 'https://www.bing.com',
   address: {
     line1: 'Flat 12',
     line2: 'Somewhere Street',

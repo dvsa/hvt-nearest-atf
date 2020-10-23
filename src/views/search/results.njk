@@ -1,24 +1,49 @@
-{% from "includes/atf-search-result.njk" import renderAtf %}
+{% from "includes/atf/macro.njk" import renderAtf %}
+{% from "includes/pagination/macro.njk" import pagination %}
 {% from "govuk-frontend/govuk/components/details/macro.njk" import govukDetails %}
 
 {% extends "layouts/layout.njk" %}
 
+{% block backLink %}
+  {{ govukBackLink({
+    href: "/",
+    text: "Back",
+    attributes: { id: "back-link" }
+  }) }}
+{% endblock %}
+
 {% block content %}
-    <h1 class="govuk-heading-xl">
-      Test centres near {{ search | escape }}
-    </h1>
-
-    <div class="search-results">
-        <hr>
-        {% for atf in data %}
-          {{ renderAtf(atf) }}
-          <hr class="clear">
-        {% endfor %}
+  <h1 class="govuk-heading-xl">
+    Test centres near '{{ searchNormalised | escape }}'
+    <p class="govuk-body-s"></p>
+    <div class="govuk-hint">
+      {% set start = (paginationSettings.currentPage - 1) * paginationSettings.perPage + 1 %}
+      {% set end = start + paginationSettings.itemsCount - 1 %}
+      {% set total = paginationSettings.scannedItemsCount %}
+      Showing {{ start }} to {{ end }} of {{ total }} results
     </div>
+  </h1>
+
+  <div class="search-results">
+    <hr>
+    {% for atf in data %}
+      {{ renderAtf(atf) }}
+      <hr class="clear">
+    {% endfor %}
+  </div>
 
 
+  <div class="govuk-grid-row">
     {{ govukDetails({
       summaryText: "Report that you cannot book an HGV, bus or trailer MOT test",
       html: "<a class='govuk-link' href='https://smartsurvey.com/''>Tell DVSA</a> if you cannot find a test centre before your HGV, bus or trailer MOT is due."
     }) }}
+  </div>
+
+  <div class="govuk-grid-row">
+    {{ pagination({
+      paginationSettings: paginationSettings,
+      searchUri: "?postcode=" + search
+    }) }}
+  </div>
 {% endblock %}

@@ -44,32 +44,38 @@
         </div>
 
         <div class="govuk-grid-column-one-half">
-          <p class="dvsa-result-heading dvsa-no-margin-top">Tested at this centre</p>
-          <ul class="govuk-list govuk-list--bullet dvsa-no-margin-top">
-            {% for inclusion in data.inclusions %}
-              <li class="govuk-body-s">
-                {{ inclusion }}
-              </li>
-            {% endfor %}
-          </ul>
+          {% if data.inclusions | length %}
+            <p class="dvsa-result-heading dvsa-no-margin-top">Tested at this centre</p>
+            <ul class="govuk-list govuk-list--bullet dvsa-no-margin-top">
+              {% for inclusion in data.inclusions %}
+                <li class="govuk-body-s">
+                  {{ inclusion }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
 
-          <p class="dvsa-result-heading">Not tested at this centre</p>
-          <ul class="govuk-list govuk-list--bullet dvsa-no-margin-top">
-            {% for exclusion in data.exclusions %}
-              <li class="govuk-body-s">
-                {{ exclusion }}
-              </li>
-            {% endfor %}
-          </ul>
+          {% if data.exclusions | length %}
+            <p class="dvsa-result-heading">Not tested at this centre</p>
+            <ul class="govuk-list govuk-list--bullet dvsa-no-margin-top">
+              {% for exclusion in data.exclusions %}
+                <li class="govuk-body-s">
+                  {{ exclusion }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
 
-          <p class="dvsa-result-heading">Site restrictions</p>
-          <ul class="govuk-list govuk-list--bullet dvsa-no-margin-top">
-            {% for restriction in data.restrictions %}
-              <li class="govuk-body-s">
-                {{ restriction }}
-              </li>
-            {% endfor %}
-          </ul>
+          {% if data.restrictions | length %}
+            <p class="dvsa-result-heading">Site restrictions</p>
+            <ul class="govuk-list govuk-list--bullet dvsa-no-margin-top">
+              {% for restriction in data.restrictions %}
+                <li class="govuk-body-s">
+                  {{ restriction }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         </div>
       </div>
 
@@ -79,11 +85,11 @@
 
 {% macro renderAvailability(availability) %}
   <p>
-    <span class="dvsa-town">
+    <span class="dvsa-availability">
       <b>Availability</b>
     </span>
     <br>
-    {% if availability.isAvailable === undefined %}
+    {% if (availability.isAvailable === undefined) or (availability.endDate | isDateBeforeToday )%}
       {{ govukTag({
         text: "NO INFORMATION",
         classes: "govuk-tag--grey"
@@ -94,14 +100,14 @@
         classes: "govuk-tag--green"
       }) }}
       <br>
-      <span class="govuk-body-s">Until {{ availability.endDate | formatDate }}</span>
+      <span class="govuk-body-s">Before {{ availability.endDate | formatDate }}</span>
     {% else %}
       {{ govukTag({
         text: "FULLY BOOKED",
         classes: "govuk-tag--red"
       }) }}
       <br>
-      <span class="govuk-body-s">Before {{ availability.endDate | formatDate }}</span>
+      <span class="govuk-body-s">Until {{ availability.endDate | formatDate }}</span>
     {% endif %}
     <br>
   </p>

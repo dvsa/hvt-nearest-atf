@@ -1,49 +1,34 @@
-import { format, utcToZonedTime } from 'date-fns-tz';
 import express, { Express } from 'express';
 import { Environment } from 'nunjucks';
 import { setUpNunjucks } from '../../src/utils/viewHelper.util';
 
 type DateFunctionType = (date: string) => string;
-// eslint-disable-next-line @typescript-eslint/naming-convention
-type to1DPFunctionType = (numeral: number) => string;
+type To1DPFunctionType = (numeral: number) => string;
+type IsDateBeforeTodayFunctionType = (date: string) => boolean;
 
 const app: Express = express();
 const nunjucks: Environment = setUpNunjucks(app);
-const someDateIsoString = new Date().toISOString();
 const timezone = 'timezone';
 process.env.TIMEZONE = timezone;
 
-jest.mock('date-fns-tz', () => ({
-  format: jest.fn(),
-  utcToZonedTime: jest.fn(),
-}));
-
 describe('Test viewHelper.util', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   describe('formatDate filter function', () => {
-    it('should call format() and utcToZonedTime() with proper params', () => {
-      (utcToZonedTime as jest.Mock).mockImplementation(() => new Date(someDateIsoString));
+    it('should return date in correct format', () => {
       const formatDate: DateFunctionType = <DateFunctionType> nunjucks.getFilter('formatDate');
 
-      formatDate(someDateIsoString);
+      const dateString: string = new Date(Date.UTC(2020, 9, 22, 14, 18, 33)).toISOString();
 
-      expect(utcToZonedTime).toHaveBeenCalledWith(new Date(someDateIsoString), timezone);
-      expect(format).toHaveBeenCalledWith(new Date(someDateIsoString), 'd MMMM yyyy');
+      expect(formatDate(dateString)).toEqual('22 October 2020');
     });
   });
 
   describe('formatDateTime filter function', () => {
-    it('should call format() and utcToZonedTime() with proper params', () => {
-      (utcToZonedTime as jest.Mock).mockImplementation(() => new Date(someDateIsoString));
+    it('should return dateTime in correct format', () => {
       const formatDateTime: DateFunctionType = <DateFunctionType> nunjucks.getFilter('formatDateTime');
 
-      formatDateTime(someDateIsoString);
+      const dateTimeString: string = new Date(Date.UTC(2020, 9, 22, 14, 18, 33)).toISOString();
 
-      expect(utcToZonedTime).toHaveBeenCalledWith(new Date(someDateIsoString), timezone);
-      expect(format).toHaveBeenCalledWith(new Date(someDateIsoString), 'EEEE d MMMM yyyy \'at\' h:mmaaaaa\'m\'');
+      expect(formatDateTime(dateTimeString)).toEqual('Thursday 22 October 2020 at 2:18pm');
     });
   });
 
@@ -51,11 +36,38 @@ describe('Test viewHelper.util', () => {
     it('should format numeral to 1 DP', () => {
       const givenNumerals: number[] = [1, 2.0, 3.14, 4.6123, 4.99999];
       const expectedNumerals: string[] = ['1.0', '2.0', '3.1', '4.6', '5.0'];
-      const to1DP: to1DPFunctionType = <to1DPFunctionType> nunjucks.getFilter('to1DP');
+      const to1DP: To1DPFunctionType = <To1DPFunctionType> nunjucks.getFilter('to1DP');
 
       givenNumerals.forEach((numeral, index) => {
         expect(to1DP(numeral)).toBe(expectedNumerals[index]);
       });
+    });
+  });
+
+  describe('isDateBeforeToday filter function', () => {
+    // eslint-disable-next-line max-len
+    const isDateBeforeToday: IsDateBeforeTodayFunctionType = <IsDateBeforeTodayFunctionType> nunjucks.getFilter('isDateBeforeToday');
+
+    it('should return true for a date that occurs before today\'s date', () => {
+      const today: Date = new Date();
+      today.setDate(today.getDate() - 1);
+      const yesterday: string = today.toISOString();
+
+      expect(isDateBeforeToday(yesterday)).toBe(true);
+    });
+
+    it('should return false for a date that occurs on today\'s date', () => {
+      const today: string = new Date().toISOString();
+
+      expect(isDateBeforeToday(today)).toBe(false);
+    });
+
+    it('should return false for a date that occurs aftet today\'s date', () => {
+      const today: Date = new Date();
+      today.setDate(today.getDate() + 1);
+      const tomorrow: string = today.toISOString();
+
+      expect(isDateBeforeToday(tomorrow)).toBe(false);
     });
   });
 });

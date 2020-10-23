@@ -73,12 +73,9 @@
     },
     html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
   }) }}
+{% endblock %}
 
-  {{ govukBackLink({
-    href: "#",
-    text: "Back",
-    attributes: { onclick: "goBack();return false;" }
-  }) }}
+{% block backLink %}
 {% endblock %}
 
 {% block content %}

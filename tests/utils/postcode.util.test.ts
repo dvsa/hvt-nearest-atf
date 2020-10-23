@@ -29,9 +29,11 @@ describe('Test postcode.util', () => {
   test('incorrect entry returns errors', () => {
     expect(postcodeUtils.validate('~ZZZ##')).toEqual(expectedFormErrors);
   });
+
   test('isNormalised reformats missing space', () => {
     expect(postcodeUtils.toNormalised('ln11tt')).toEqual('LN1 1TT');
   });
+
   test('isNormalised reformats case', () => {
     expect(postcodeUtils.toNormalised('ln1 1tt')).toEqual('LN1 1TT');
   });
