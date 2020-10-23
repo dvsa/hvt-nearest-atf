@@ -12,6 +12,8 @@ export const setUpNunjucks = (app: Express): Environment => {
     .addFilter('formatDate', (date: string) => format(utcToZonedTime(new Date(date), process.env.TIMEZONE), 'd MMMM yyyy'))
     // eslint-disable-next-line max-len
     .addFilter('formatDateTime', (date: string) => format(utcToZonedTime(new Date(date), process.env.TIMEZONE), 'EEEE d MMMM yyyy \'at\' h:mmaaaaa\'m\''))
+    // eslint-disable-next-line max-len
+    .addFilter('isDateBeforeToday', (date: number) => utcToZonedTime(new Date(date), process.env.TIMEZONE) < utcToZonedTime(new Date(), process.env.TIMEZONE))
     .addFilter('to1DP', (numeral: number): string => numeral.toFixed(1));
   // ... any other globals or custom filters here
 

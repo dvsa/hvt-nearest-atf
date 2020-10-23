@@ -1,20 +1,23 @@
 {% macro pagination(params) %}
-<nav role="navigation" aria-label="Pagination">
-{% set itemcount = (params.rows | length) -1 %}
-{% set start = (params.rows[0].page) %}
-{% set search = (params.q | urlencode) %}
-<div class="pagination__summary">Showing {{ start }} to {{ start + itemcount }} of {{ params.total }} results</div>
+  <nav role="navigation" aria-label="Pagination">
+    {% set start = (params.paginationSettings.currentPage - 1) * params.paginationSettings.perPage + 1 %}
+    {% set end = start + params.paginationSettings.itemsCount - 1 %}
+    {% set total = params.paginationSettings.scannedItemsCount %}
+
+    <div class="pagination__summary">Showing {{ start }} to {{ end }} of {{ total }} results</div>
     <ul class="pagination pagination_list-items">
-      {% set currentPage = ((params.rows | selectattr("current"))[0].page | int) %}
-      {% set previous = currentPage - 1 %}
-      {% set next = currentPage + 1 %}
-      {% if currentPage !== (params.rows[0].page | int) %}
-        <li class="pagination__item"><a class="pagination__link" href="?q={{search}}&page={{ previous }}" aria-label="Previous page"><span aria-hidden="true" role="presentation">«</span> Previous</a></li>
-       {% endif %}
-         {% include "./__template.njk" %}
-       {% if currentPage !== params.rows[itemcount].page %}
-        <li class="pagination__item"><a class="pagination__link" href="?q={{search}}&page={{ next }}" aria-label="Next page">Next <span aria-hidden="true" role="presentation">»</span></a></li>
+      {% set previous = params.paginationSettings.currentPage - 1 %}
+      {% set next = params.paginationSettings.currentPage + 1 %}
+
+      {% if params.paginationSettings.currentPage > 1 %}
+        <li class="pagination__item"><a class="govuk-link pagination__link" href="{{ params.searchUri }}&page={{ previous }}" aria-label="Previous page"><span aria-hidden="true" role="presentation">«</span> Previous</a></li>
+      {% endif %}
+
+      {% include "./__template.njk" %}
+
+      {% if params.paginationSettings.currentPage < params.paginationSettings.scannedItemsCount / params.paginationSettings.perPage %}
+        <li class="pagination__item"><a class="govuk-link pagination__link" href="{{ params.searchUri }}&page={{ next }}" aria-label="Next page">Next <span aria-hidden="true" role="presentation">»</span></a></li>
       {% endif %}
     </ul>
-</nav>
+  </nav>
 {% endmacro %}
