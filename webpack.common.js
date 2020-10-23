@@ -4,7 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const sass = require('node-sass');
 
 const awsSamPlugin = new AwsSamPlugin({ vscodeDebug: false });
-const lambdaName = "LambdaFunction"; // must correspond to lambda name in template.yml
+const lambdaName = "NEARESTATF"; // must correspond to lambda name in template.yml
 
 module.exports = {
   entry: () => awsSamPlugin.entry(),
