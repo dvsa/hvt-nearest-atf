@@ -1,8 +1,9 @@
 import express, { Router } from 'express';
-import { privacy, accessibility } from '../controllers/index.controller';
+import { privacy, accessibility, search } from '../controllers/index.controller';
 
 const indexRoute: Router = express.Router();
 
+indexRoute.get('/', search);
 indexRoute.get('/privacy', privacy);
 indexRoute.get('/accessibility', accessibility);
 
