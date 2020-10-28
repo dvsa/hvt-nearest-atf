@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import { Request, NextFunction, Response } from 'express';
-import { search } from '../../src/controllers/search.controller';
+import { accessibility, privacy, search } from '../../src/controllers/index.controller';
 import { geolocationService } from '../../src/services/geolocation.service';
 import { getAtfs } from '../data-providers/atf.dataProvider';
 import { AuthorisedTestingFacility } from '../../src/models/authorisedTestingFacility.model';
@@ -19,6 +19,8 @@ const atfs: AuthorisedTestingFacility[] = getAtfs(atfsNumber);
 geolocationService.nearest = jest.fn();
 
 describe('Test search.controller', () => {
+  let renderSpy: jest.SpyInstance;
+
   beforeEach(() => {
     apiRequestId = v4();
     awsRequestId = v4();
@@ -30,6 +32,7 @@ describe('Test search.controller', () => {
     };
     resMock = <Response> <unknown> { redirect: jest.fn(), render: jest.fn(), status: jest.fn().mockReturnThis() };
     nextMock = jest.fn();
+    renderSpy = jest.spyOn(resMock, 'render');
   });
 
   afterEach(() => {
@@ -37,12 +40,6 @@ describe('Test search.controller', () => {
   });
 
   describe('search method', () => {
-    let renderSpy: jest.SpyInstance;
-
-    beforeEach(() => {
-      renderSpy = jest.spyOn(resMock, 'render');
-    });
-
     it('should render search/show page when no postcode provided', async () => {
       await search(reqMock, resMock, nextMock);
 
@@ -291,6 +288,22 @@ describe('Test search.controller', () => {
       );
       expect(validateSpy).toHaveBeenCalledWith(postcodeUpperCaseStripped);
       expect(validateSpy).toReturnWith(expectedFormErrors);
+    });
+  });
+
+  describe('privacy method', () => {
+    it('should render index/privacy page', () => {
+      privacy(reqMock, resMock);
+
+      expect(renderSpy).toHaveBeenCalledWith('index/privacy');
+    });
+  });
+
+  describe('accessibility method', () => {
+    it('should render index/accessibility page', () => {
+      accessibility(reqMock, resMock);
+
+      expect(renderSpy).toHaveBeenCalledWith('index/accessibility');
     });
   });
 });

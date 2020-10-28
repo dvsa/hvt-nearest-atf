@@ -24,7 +24,7 @@ A Serverless Node Express lambda (NearestAtfFunction) for showing nearest ATF ce
 ## Debug Locally (VS Code only)
 
 1. Run lambdas in debug mode: `npm run start:dev -- -d 5858`
-1. Add a breakpoint to the lambda being tested (`src/controllers/search.controller.ts`)
+1. Add a breakpoint to the lambda being tested (`src/controllers/index.controller.ts`)
 1. Run the debug config from VS Code that corresponds to lambda being tested (`NearestAtfFunction`)
 1. Go to `http://localhost:3007/` on browser
 

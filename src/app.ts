@@ -9,7 +9,6 @@ import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 import dotenv from 'dotenv';
 import { setUpNunjucks } from './utils/viewHelper.util';
 import assetRoute from './routes/asset.route';
-import searchRoute from './routes/search.route';
 import indexRoute from './routes/index.route';
 
 // Load environment variables
@@ -19,7 +18,6 @@ const app: Express = express();
 const routes: Router[] = [
   assetRoute,
   indexRoute,
-  searchRoute,
 ];
 
 // View engine
