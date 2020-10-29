@@ -5,6 +5,7 @@ import { setUpNunjucks } from '../../src/utils/viewHelper.util';
 type DateFunctionType = (date: string) => string;
 type To1DPFunctionType = (numeral: number) => string;
 type IsDateBeforeTodayFunctionType = (date: string) => boolean;
+type WrapPhraseIntoLinkFunctionType = (text: string, phrases: string[], link: string, cssClass: string) => string;
 
 const app: Express = express();
 const nunjucks: Environment = setUpNunjucks(app);
@@ -68,6 +69,40 @@ describe('Test viewHelper.util', () => {
       const tomorrow: string = today.toISOString();
 
       expect(isDateBeforeToday(tomorrow)).toBe(false);
+    });
+  });
+
+  describe('wrapPhraseIntoLink filter function', () => {
+    // eslint-disable-next-line max-len
+    const wrapPhraseIntoLink: WrapPhraseIntoLinkFunctionType = <WrapPhraseIntoLinkFunctionType> nunjucks.getFilter('wrapPhraseIntoLink');
+
+    const phrases: string[] = ['foo', 'bar', 'baz'];
+    const link = 'https://www.google.com';
+    const cssClasses = 'some-fancy-css-class and-another-one';
+
+    it('should properly wrap given phrase into <a> tag when all parameters passed and one phrase was found', () => {
+      const text = 'lorem ipsum foo lorem ipsum';
+
+      const result: string = wrapPhraseIntoLink(text, phrases, link, cssClasses);
+
+      expect(result).toBe(`lorem ipsum <a href="${link}" class="${cssClasses}" target="_blank">foo</a> lorem ipsum`);
+    });
+
+    it('should properly wrap given phrases into <a> tag when all parameters passed and two phrases were found', () => {
+      const text = 'lorem ipsum foo bar';
+
+      const result: string = wrapPhraseIntoLink(text, phrases, link, cssClasses);
+
+      // eslint-disable-next-line max-len
+      expect(result).toBe(`lorem ipsum <a href="${link}" class="${cssClasses}" target="_blank">foo</a> <a href="${link}" class="${cssClasses}" target="_blank">bar</a>`);
+    });
+
+    it('should return original text when a single phrase was not found', () => {
+      const text = 'lorem ipsum';
+
+      const result: string = wrapPhraseIntoLink(text, phrases, link, cssClasses);
+
+      expect(result).toBe(text);
     });
   });
 });

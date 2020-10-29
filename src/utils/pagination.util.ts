@@ -1,5 +1,4 @@
 import { Request } from 'express';
-import { PagedResponse } from '../models/pagedResponse.model';
 
 const getCurrentPageFromRequest = (req: Request, maxNumberOfPages: number): number => {
   const currentPage = parseInt(<string> req.query.page, 10) || 1;
