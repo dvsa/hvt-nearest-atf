@@ -49,7 +49,11 @@
             <ul class="govuk-list govuk-list--bullet dvsa-no-margin-top">
               {% for inclusion in data.inclusions %}
                 <li class="govuk-body-s">
-                  {{ inclusion }}
+                  {{ inclusion | wrapPhraseIntoLink(
+                    ["red category", "green category", "amber category"],
+                    "https://www.gov.uk/government/publications/accepting-dangerous-goods-vehicles-for-adr-or-annual-tests",
+                    "govuk-link"
+                  ) | safe }}
                 </li>
               {% endfor %}
             </ul>
