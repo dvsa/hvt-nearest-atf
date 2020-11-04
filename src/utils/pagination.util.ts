@@ -14,9 +14,6 @@ const getCurrentPageFromRequest = (req: Request, maxNumberOfPages: number): numb
   return currentPage;
 };
 
-// eslint-disable-next-line max-len
-const isInMaxNumberOfPagesRange = (page: number, maxNumberOfPages: number): boolean => page >= 1 && page <= maxNumberOfPages;
-
 const calculateMaxScannedItemsCount = (
   scannedItemsCount: number,
   itemsPerPage: number,
@@ -31,6 +28,5 @@ const calculateMaxScannedItemsCount = (
 
 export const pagination = {
   getCurrentPageFromRequest,
-  isInMaxNumberOfPagesRange,
   calculateMaxScannedItemsCount,
 };

@@ -31,17 +31,6 @@ describe('Test pagination.util', () => {
     });
   });
 
-  describe('isInMaxNumberOfPagesRange method', () => {
-    it('should return true if number is in range', () => {
-      expect(pagination.isInMaxNumberOfPagesRange(5, maxNumberOfPages)).toBe(true);
-    });
-
-    it('should return false if number is out of range', () => {
-      expect(pagination.isInMaxNumberOfPagesRange(-1, maxNumberOfPages)).toBe(false);
-      expect(pagination.isInMaxNumberOfPagesRange(20, maxNumberOfPages)).toBe(false);
-    });
-  });
-
   describe('calculateMaxScannedItemsCount method', () => {
     it('should return "scannedItemsCount" if "scannedItemsCount" < "maxScannedItemsCount"', () => {
       const scannedItemsCount = 5;

@@ -4,7 +4,10 @@ import { accessibility, privacy, search } from '../../src/controllers/index.cont
 import { geolocationService } from '../../src/services/geolocation.service';
 import { getAtfs } from '../data-providers/atf.dataProvider';
 import { AuthorisedTestingFacility } from '../../src/models/authorisedTestingFacility.model';
-import { FormError, postcodeUtils } from '../../src/utils/postcode.util';
+import { postcodeUtils } from '../../src/utils/postcode.util';
+import { FormError } from '../../src/errors/postcode.error';
+import { request } from '../../src/utils/request.util';
+import { PagedResponse } from '../../src/models/pagedResponse.model';
 
 let apiRequestId: string;
 let awsRequestId: string;
@@ -15,6 +18,13 @@ let nextMock: NextFunction;
 
 const atfsNumber = 6;
 const atfs: AuthorisedTestingFacility[] = getAtfs(atfsNumber);
+const defaultExpectedFormError: FormError = {
+  errors: [
+    { field: 'postcode', message: 'Enter a postcode, like SW1A 2AA' },
+  ],
+  heading: 'There is a problem',
+  errorMessage: 'Enter a real postcode',
+};
 
 geolocationService.nearest = jest.fn();
 
@@ -53,14 +63,14 @@ describe('Test search.controller', () => {
       let postcode: string;
       let postcodeNormalised: string;
       let postcodeNormalisedStripped: string;
-      let validateSpy: jest.SpyInstance;
+      let isValidPostcodeSpy: jest.SpyInstance;
       let toNormalisedSpy: jest.SpyInstance;
 
       beforeEach(() => {
         postcode = 'po16 7gz';
         postcodeNormalised = 'PO16 7GZ';
         postcodeNormalisedStripped = 'PO167GZ';
-        validateSpy = jest.spyOn(postcodeUtils, 'validate');
+        isValidPostcodeSpy = jest.spyOn(postcodeUtils, 'isValidPostcode');
         toNormalisedSpy = jest.spyOn(postcodeUtils, 'toNormalised');
         (geolocationService.nearest as jest.Mock).mockReturnValue(Promise.resolve({
           Count: perPage,
@@ -99,8 +109,8 @@ describe('Test search.controller', () => {
             postcodeNormalisedStripped,
             { page: 1, limit: perPage },
           );
-          expect(validateSpy).toHaveBeenCalledWith(postcodeNormalisedStripped);
-          expect(validateSpy).toReturnWith([]);
+          expect(isValidPostcodeSpy).toHaveBeenCalledWith(postcodeNormalisedStripped);
+          expect(isValidPostcodeSpy).toReturnWith(true);
         });
       });
 
@@ -129,8 +139,8 @@ describe('Test search.controller', () => {
             postcodeNormalisedStripped,
             { page: 1, limit: perPage },
           );
-          expect(validateSpy).toHaveBeenCalledWith(postcodeNormalisedStripped);
-          expect(validateSpy).toReturnWith([]);
+          expect(isValidPostcodeSpy).toHaveBeenCalledWith(postcodeNormalisedStripped);
+          expect(isValidPostcodeSpy).toReturnWith(true);
         });
       });
 
@@ -159,8 +169,8 @@ describe('Test search.controller', () => {
             postcodeNormalisedStripped,
             { page: 3, limit: perPage },
           );
-          expect(validateSpy).toHaveBeenCalledWith(postcodeNormalisedStripped);
-          expect(validateSpy).toReturnWith([]);
+          expect(isValidPostcodeSpy).toHaveBeenCalledWith(postcodeNormalisedStripped);
+          expect(isValidPostcodeSpy).toReturnWith(true);
         });
       });
 
@@ -223,7 +233,7 @@ describe('Test search.controller', () => {
 
     describe('when various valid postocde formats provided and no page given', () => {
       it('should render 1 search/results page and call geolocationService.nearest() to get first 5 ATFs', () => {
-        const validateSpy = jest.spyOn(postcodeUtils, 'validate');
+        const isValidPostcodeSpy = jest.spyOn(postcodeUtils, 'isValidPostcode');
         const toNormalisedSpy = jest.spyOn(postcodeUtils, 'toNormalised');
         const perPage = 5;
         const postcodes = [
@@ -259,35 +269,51 @@ describe('Test search.controller', () => {
             postcode.normalisedStripped,
             { page: 1, limit: perPage },
           );
-          expect(validateSpy).toHaveBeenCalledWith(postcode.normalisedStripped);
-          expect(validateSpy).toReturnWith([]);
+          expect(isValidPostcodeSpy).toHaveBeenCalledWith(postcode.normalisedStripped);
+          expect(isValidPostcodeSpy).toReturnWith(true);
           expect(toNormalisedSpy).toHaveBeenCalledWith(postcode.normalisedStripped);
           expect(toNormalisedSpy).toReturnWith(postcode.normalised);
         });
       });
     });
 
-    it('should render search/show page with proper params when invalid postcode provided', async () => {
+    it('should render search/show page with form error when postcode with invalid format provided', async () => {
       const postcode = 'i am an invalid postcode';
       const postcodeUpperCaseStripped = 'IAMANINVALIDPOSTCODE';
       reqMock.query = { postcode };
-      const validateSpy = jest.spyOn(postcodeUtils, 'validate');
-      const expectedFormErrors: FormError[] = [{
-        errors: [
-          { field: 'postcode', message: 'Enter a postcode, like SW1A 2AA' },
-        ],
-        heading: 'There is a problem',
-        errorMessage: 'Enter a postcode in the correct format',
-      }];
+      const isValidPostcodeSpy = jest.spyOn(postcodeUtils, 'isValidPostcode');
 
       await search(reqMock, resMock, nextMock);
 
       expect(renderSpy).toHaveBeenCalledWith(
         'search/show',
-        { hasError: true, formErrors: expectedFormErrors[0] },
+        { hasError: true, formErrors: defaultExpectedFormError },
       );
-      expect(validateSpy).toHaveBeenCalledWith(postcodeUpperCaseStripped);
-      expect(validateSpy).toReturnWith(expectedFormErrors);
+      expect(isValidPostcodeSpy).toHaveBeenCalledWith(postcodeUpperCaseStripped);
+      expect(isValidPostcodeSpy).toReturnWith(false);
+    });
+
+    it('should render search/show page with form error when unexisting postcode provided', async () => {
+      const postcode = 'bt51 3jk';
+      const postcodeNormalisedStripped = 'BT513JK';
+      const perPage = 5;
+      reqMock.query = { postcode };
+      const isValidPostcodeSpy = jest.spyOn(postcodeUtils, 'isValidPostcode');
+      (geolocationService.nearest as jest.Mock).mockResolvedValue(<PagedResponse<AuthorisedTestingFacility>>{});
+
+      await search(reqMock, resMock, nextMock);
+
+      expect(renderSpy).toHaveBeenCalledWith(
+        'search/show',
+        { hasError: true, formErrors: defaultExpectedFormError },
+      );
+      expect(isValidPostcodeSpy).toHaveBeenCalledWith(postcodeNormalisedStripped);
+      expect(isValidPostcodeSpy).toReturnWith(true);
+      expect(geolocationService.nearest).toHaveBeenLastCalledWith(
+        reqMock,
+        postcodeNormalisedStripped,
+        { page: 1, limit: perPage },
+      );
     });
   });
 
