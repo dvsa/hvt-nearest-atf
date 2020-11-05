@@ -13,7 +13,9 @@ const nearest = async (
 ): Promise<PagedResponse<AuthorisedTestingFacility>> => {
   logger.info(req, `Retrieving ATFs nearest to postcode [${postcode}], pagination [${JSON.stringify(pagination)}]`);
 
-  return request.get(req, `${process.env.GEOLOCATION_URL}${postcode}?page=${pagination.page}&limit=${pagination.limit}`)
+  return request.get(
+    req, `${process.env.GEOLOCATION_URL}/${postcode}?page=${pagination.page}&limit=${pagination.limit}`,
+  )
     .then((response: AxiosResponse<PagedResponse<AuthorisedTestingFacility>>) => response.data)
     .catch((error) => {
       const errorString: string = JSON.stringify(error, Object.getOwnPropertyNames(error));

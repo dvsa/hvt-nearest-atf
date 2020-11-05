@@ -36,7 +36,7 @@ describe('Test geolocation.service', () => {
         expect(results).toStrictEqual({ Items: atfs, Count: atfsNumber, ScannedCount: atfsNumber });
         expect(request.get).toHaveBeenCalledWith(
           req,
-          `${process.env.GEOLOCATION_URL}${postcode}?page=${defaultPagination.page}&limit=${defaultPagination.limit}`,
+          `${process.env.GEOLOCATION_URL}/${postcode}?page=${defaultPagination.page}&limit=${defaultPagination.limit}`,
         );
       });
 
@@ -56,7 +56,7 @@ describe('Test geolocation.service', () => {
           expect(results).toStrictEqual({ Items: atfs, Count: atfsNumber, ScannedCount: atfsNumber });
           expect(request.get).toHaveBeenCalledWith(
             req,
-            `${process.env.GEOLOCATION_URL}${postcode}?page=${pagination.page}&limit=${pagination.limit}`,
+            `${process.env.GEOLOCATION_URL}/${postcode}?page=${pagination.page}&limit=${pagination.limit}`,
           );
         });
       });
