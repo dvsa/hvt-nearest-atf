@@ -5,7 +5,11 @@
     <li>
 
       <h2 class="govuk-heading-m">
+      {%if data.url %}
         <a class="govuk-link" target="_blank" href="{{ data.url }}">{{ data.name }}</a>
+      {% else %}
+        {{ data.name }}
+      {% endif %}
         <span class="govuk-hint">{{ data.geoLocation.distance | to1DP }} miles away</span>
       </h2>
 
