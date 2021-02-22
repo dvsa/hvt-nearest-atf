@@ -4,6 +4,7 @@ import { privacy, accessibility, search } from '../controllers/index.controller'
 const indexRoute: Router = express.Router();
 
 indexRoute.get('/', search);
+indexRoute.post('/', search);
 indexRoute.get('/privacy', privacy);
 indexRoute.get('/accessibility', accessibility);
 
