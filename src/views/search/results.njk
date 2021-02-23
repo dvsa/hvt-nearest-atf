@@ -18,43 +18,51 @@
   <h1 class="govuk-heading-xl dvsa-no-margin-bottom">
     Test centres near '{{ searchNormalised | escape }}'
     <p class="govuk-body-s"></p>
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-one-half govuk-hint">
-        {% set start = (paginationSettings.currentPage - 1) * paginationSettings.perPage + 1 %}
-        {% set end = start + paginationSettings.itemsCount - 1 %}
-        {% set total = paginationSettings.scannedItemsCount %}
-        Showing {{ start }} to {{ end }} of {{ total }} results
-      </div>
-      <div class="govuk-grid-column-one-half">
-        <form method="POST" id="filter-results-form">
-          {{ govukCheckboxes({
-            idPrefix: "filter-checkboxes",
-            name: "filters",
-            classes: "govuk-checkboxes--small",
-            fieldset: {
-              legend: {
-                text: "Filter the results"
-              }
-            },
-            items: [
-              {
-                value: "removeNoAvailability",
-                text: "Remove test centres with no availability",
-                checked: filters.removeAtfsWithNoAvailability
-              }
-            ]
-          }) }}
+  </h1>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half govuk-hint">
+      {% set start = (paginationSettings.currentPage - 1) * paginationSettings.perPage + 1 %}
+      {% set end = start + paginationSettings.itemsCount - 1 %}
+      {% set total = paginationSettings.scannedItemsCount %}
+      Showing {{ start }} to {{ end }} of {{ total }} results
+    </div>
+    <div class="govuk-grid-column-one-half">
+      {% set filterUrl = "?postcode=" + search + "&page=" + paginationSettings.currentPage %}
+      <form action={{filterUrl}} method="POST" id="filter-results-form">
+        {{ govukCheckboxes({
+          idPrefix: "filter-checkboxes",
+          name: "filters",
+          classes: "govuk-checkboxes--small",
+          fieldset: {
+            legend: {
+              text: "Filter the results"
+            }
+          },
+          items: [
+            {
+              value: "removeNoAvailability",
+              text: "Remove test centres with no availability",
+              checked: filters.removeAtfsWithNoAvailability
+            }
+          ]
+        }) }}
+        <div class="govuk-button-group">
           {{ govukButton({
             text: "Filter",
             attributes: {
               id: "filters-submit-button"
             }
           }) }}
-        </form>
-      </div>
-    </div>
 
-  </h1>
+          {% set clearFiltersLink = "?postcode=" + search + "&page=" + paginationSettings.currentPage %}
+          <a class="govuk-link govuk-link--no-visited-state govuk-!-padding-1"
+            href={{clearFiltersLink}} id="clear-filters-link">
+            Clear filters
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <div class="search-results">
     <hr>
@@ -75,7 +83,7 @@
   <div class="govuk-grid-row">
     {{ pagination({
       paginationSettings: paginationSettings,
-      searchUri: "?postcode=" + search
+      searchUri: "?postcode=" + search + "&removeAtfsWithNoAvailability=" + filters.removeAtfsWithNoAvailability
     }) }}
   </div>
 {% endblock %}
