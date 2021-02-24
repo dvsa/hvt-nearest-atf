@@ -30,7 +30,6 @@
       {% set filterUrl = "?postcode=" + search %}
       <form action={{filterUrl}} method="POST" id="filter-results-form">
         {{ govukCheckboxes({
-          idPrefix: "filter-checkboxes",
           name: "filters",
           classes: "govuk-checkboxes--small",
           fieldset: {
@@ -40,6 +39,7 @@
           },
           items: [
             {
+              id: "remove-no-availability-filter-checkbox",
               value: "removeNoAvailability",
               text: "Remove fully booked test centres",
               checked: filters.removeAtfsWithNoAvailability

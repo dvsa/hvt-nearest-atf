@@ -3,7 +3,6 @@ import { getFiltersFromRequest } from '../../src/utils/filters.util';
 import { ResultsFilters } from '../../src/models/resultsFilters.model';
 
 describe('Filters utility tests', () => {
-
   describe('getFiltersFromRequest tests', () => {
     let requestMock: Request;
     const resultsFiltersWithNoAvailability: ResultsFilters = {
@@ -41,7 +40,7 @@ describe('Filters utility tests', () => {
       expect(result).toEqual({});
     });
 
-    test('if request body filters is a string for the removeNoAvailability filter', () => {
+    test('should add removeAtfsWithNoAvailability if request body filters has the correct string', () => {
       requestMock.body = {
         filters: 'removeNoAvailability',
       };
@@ -49,7 +48,7 @@ describe('Filters utility tests', () => {
       expect(result).toEqual(resultsFiltersWithNoAvailability);
     });
 
-    test('if request body filters is a other than the removeNoAvailability filter', () => {
+    test('should not add removeAtfsWithNoAvailability if request body filters has an incorrect string', () => {
       requestMock.body = {
         filters: 'someFilter',
       };
@@ -57,7 +56,8 @@ describe('Filters utility tests', () => {
       expect(result).toEqual({});
     });
 
-    test('if req body filters is an array and includes removeNoAvailability', () => {
+    // eslint-disable-next-line max-len
+    test('should add removeAtfsWithNoAvailability if req body filters is an array and includes removeNoAvailability', () => {
       requestMock.body = {
         filters: ['otherFilter', 'removeNoAvailability'],
       };
@@ -65,7 +65,8 @@ describe('Filters utility tests', () => {
       expect(result).toEqual(resultsFiltersWithNoAvailability);
     });
 
-    test('if req body filters is an array and does not include removeNoAvailability', () => {
+    // eslint-disable-next-line max-len
+    test('should not add removeAtfsWithNoAvailability if req body filters is an array and does not include removeNoAvailability', () => {
       requestMock.body = {
         filters: ['otherFilter', 'anotherFilter'],
       };
