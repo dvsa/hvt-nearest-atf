@@ -39,6 +39,9 @@
 
   </script>
 
+{% include "includes/cookie-manager/cookie-success-banner.njk" %}
+{% include "includes/cookie-manager/cookie-success-all-banner.njk" %}
+{% include "includes/cookie-manager/cookie-banner.njk" %}
 {% block bodyStart %}
 {% endblock %}
 
@@ -94,6 +97,10 @@
         {
           href: "/privacy",
           text: "Privacy"
+        },
+        {
+          href: "/cookies",
+          text: "Cookies"
         }
       ]
     }
@@ -101,7 +108,7 @@
 {% endblock %}
 
 {% block bodyEnd %}
- {% include "includes/footerjs.njk" %}
+{% include "includes/footerjs.njk" %}
 
 {% endblock %}
 </body>

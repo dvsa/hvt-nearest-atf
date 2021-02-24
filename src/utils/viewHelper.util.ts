@@ -26,8 +26,9 @@ export const setUpNunjucks = (app: Express): Environment => {
       });
 
       return modifiedText;
-    });
-  // ... any other globals or custom filters here
+    })
+    // ... any other globals or custom filters here
+    .addGlobal('serviceName', 'find an MOT test centre for a heavy goods vehicle (HGV), bus or trailer');
 
   return env;
 };
