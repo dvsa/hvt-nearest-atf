@@ -20,6 +20,16 @@ A Serverless Node Express lambda (NearestAtfFunction) for showing nearest ATF ce
 1. `npm run start:dev`
 1. Go to `http://localhost:3007/` on browser
 
+### Run and watch Locally
+
+As steps above but instead of `build:dev`
+- `npm run watch:dev`
+
+and in a separate terminal, run
+
+- `npm run start:dev`
+
+Note: only `.ts` files are being watched. Any changes to template `njk` files will not be watched so will not rebuilt.
 
 ## Debug Locally (VS Code only)
 
