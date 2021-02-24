@@ -27,7 +27,7 @@
       Showing {{ start }} to {{ end }} of {{ total }} results
     </div>
     <div class="govuk-grid-column-one-half">
-      {% set filterUrl = "?postcode=" + search + "&page=" + paginationSettings.currentPage %}
+      {% set filterUrl = "?postcode=" + search %}
       <form action={{filterUrl}} method="POST" id="filter-results-form">
         {{ govukCheckboxes({
           idPrefix: "filter-checkboxes",
@@ -41,7 +41,7 @@
           items: [
             {
               value: "removeNoAvailability",
-              text: "Remove test centres with no availability",
+              text: "Remove fully booked test centres",
               checked: filters.removeAtfsWithNoAvailability
             }
           ]
@@ -54,7 +54,7 @@
             }
           }) }}
 
-          {% set clearFiltersLink = "?postcode=" + search + "&page=" + paginationSettings.currentPage %}
+          {% set clearFiltersLink = "?postcode=" + search %}
           <a class="govuk-link govuk-link--no-visited-state govuk-!-padding-1"
             href={{clearFiltersLink}} id="clear-filters-link">
             Clear filters
