@@ -28,7 +28,7 @@
     "date-fns-tz": "^1.0.12",
     "dotenv": "^8.2.0",
     "express": "^4.15.2",
-    "govuk-frontend": "^3.10.0",
+    "govuk-frontend": "^3.11.0",
     "nunjucks": "^3.2.2",
     "postcode": "^5.0.0"
   },
