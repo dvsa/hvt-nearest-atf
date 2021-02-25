@@ -29,11 +29,15 @@ const nearest = async (
 };
 
 const buildGeolocationUrl = (postcode: string, pagination: PaginationOptions, filters: ResultsFilters): string => {
-  let url = `${process.env.GEOLOCATION_URL}/${postcode}?page=${pagination.page}&limit=${pagination.limit}`;
+  const queryParams: Record<string, string> = {
+    page: pagination.page.toString(),
+    limit: pagination.limit.toString(),
+  };
   if (filters.removeAtfsWithNoAvailability) {
-    url += `&removeAtfsWithNoAvailability=${filters.removeAtfsWithNoAvailability}`;
+    queryParams.removeAtfsWithNoAvailability = filters.removeAtfsWithNoAvailability;
   }
-  return url;
+  const urlSearchParams = new URLSearchParams(queryParams).toString();
+  return `${process.env.GEOLOCATION_URL}/${postcode}?${urlSearchParams}`;
 };
 
 export const geolocationService = {

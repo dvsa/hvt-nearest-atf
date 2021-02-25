@@ -6,6 +6,7 @@ import { geolocationService } from '../../src/services/geolocation.service';
 import { logger } from '../../src/utils/logger.util';
 import { request } from '../../src/utils/request.util';
 import { getAtfs } from '../data-providers/atf.dataProvider';
+import { ResultsFilters } from '../../src/models/resultsFilters.model';
 
 request.get = jest.fn();
 logger.info = jest.fn();
@@ -51,6 +52,77 @@ describe('Test geolocation.service', () => {
             req,
             postcode,
             pagination,
+          );
+
+          expect(results).toStrictEqual({ Items: atfs, Count: atfsNumber, ScannedCount: atfsNumber });
+          expect(request.get).toHaveBeenCalledWith(
+            req,
+            `${process.env.GEOLOCATION_URL}/${postcode}?page=${pagination.page}&limit=${pagination.limit}`,
+          );
+        });
+      });
+
+      describe('when filtering options provided', () => {
+        it('should call request.get() with removeNoAvailability when provided as true', async () => {
+          (request.get as jest.Mock).mockReturnValue(Promise.resolve({
+            data: { Count: atfsNumber, ScannedCount: atfsNumber, Items: atfs },
+          }));
+          const pagination: PaginationOptions = { page: 2, limit: 10 };
+          const filterOptions: ResultsFilters = {
+            removeAtfsWithNoAvailability: 'true',
+          };
+
+          const results: PagedResponse<AuthorisedTestingFacility> = await geolocationService.nearest(
+            req,
+            postcode,
+            pagination,
+            filterOptions,
+          );
+
+          expect(results).toStrictEqual({ Items: atfs, Count: atfsNumber, ScannedCount: atfsNumber });
+          expect(request.get).toHaveBeenCalledWith(
+            req,
+            `${process.env.GEOLOCATION_URL}/${postcode}?page=${pagination.page}&limit=${pagination.limit}`
+              + `&removeAtfsWithNoAvailability=${filterOptions.removeAtfsWithNoAvailability}`,
+          );
+        });
+
+        it('should call request.get() with removeNoAvailability when provided as false', async () => {
+          (request.get as jest.Mock).mockReturnValue(Promise.resolve({
+            data: { Count: atfsNumber, ScannedCount: atfsNumber, Items: atfs },
+          }));
+          const pagination: PaginationOptions = { page: 2, limit: 10 };
+          const filterOptions: ResultsFilters = {
+            removeAtfsWithNoAvailability: 'false',
+          };
+
+          const results: PagedResponse<AuthorisedTestingFacility> = await geolocationService.nearest(
+            req,
+            postcode,
+            pagination,
+            filterOptions,
+          );
+
+          expect(results).toStrictEqual({ Items: atfs, Count: atfsNumber, ScannedCount: atfsNumber });
+          expect(request.get).toHaveBeenCalledWith(
+            req,
+            `${process.env.GEOLOCATION_URL}/${postcode}?page=${pagination.page}&limit=${pagination.limit}`
+              + `&removeAtfsWithNoAvailability=${filterOptions.removeAtfsWithNoAvailability}`,
+          );
+        });
+
+        it('should call request.get() without removeNoAvailability when undefined', async () => {
+          (request.get as jest.Mock).mockReturnValue(Promise.resolve({
+            data: { Count: atfsNumber, ScannedCount: atfsNumber, Items: atfs },
+          }));
+          const pagination: PaginationOptions = { page: 2, limit: 10 };
+          const filterOptions: ResultsFilters = {};
+
+          const results: PagedResponse<AuthorisedTestingFacility> = await geolocationService.nearest(
+            req,
+            postcode,
+            pagination,
+            filterOptions,
           );
 
           expect(results).toStrictEqual({ Items: atfs, Count: atfsNumber, ScannedCount: atfsNumber });
