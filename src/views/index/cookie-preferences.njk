@@ -69,16 +69,15 @@
 
 
 
-
-        <div class="js-hidden text">
-        <h2>TODO: this bit should be hidden</h2>
-            <div>
-                <p>We use Javascript to set most of our cookies. Unfortunately Javascript is not running on your browser, so you cannot change your settings. You can try:</p>
-                <ul class="list-bullet">
-                    <li>reloading the page</li>
-                    <li>turning on Javascript in your browser</li>
-                </ul>
-            </div>
-        </div>
+<noscript>
+    <div class="js-hidden text">
+        <h2 class="govuk-heading-l">Your browser does not support JavaScript</h2>
+        <p class="govuk-body">We use Javascript to set most of our cookies. Unfortunately Javascript is not running on your browser, so you cannot change your settings. You can try:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>reloading the page</li>
+            <li>turning on Javascript in your browser</li>
+        </ul>
+    </div>
+</noscript>
 
 {% endblock %}
