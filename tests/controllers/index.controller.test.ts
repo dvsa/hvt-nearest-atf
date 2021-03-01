@@ -6,7 +6,6 @@ import { getAtfs } from '../data-providers/atf.dataProvider';
 import { AuthorisedTestingFacility } from '../../src/models/authorisedTestingFacility.model';
 import { postcodeUtils } from '../../src/utils/postcode.util';
 import { FormError } from '../../src/errors/postcode.error';
-import { request } from '../../src/utils/request.util';
 import { PagedResponse } from '../../src/models/pagedResponse.model';
 
 let apiRequestId: string;
@@ -102,12 +101,16 @@ describe('Test search.controller', () => {
                 itemsCount: perPage,
                 scannedItemsCount: atfsNumber,
               },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+              },
             },
           );
           expect(geolocationService.nearest).toHaveBeenCalledWith(
             reqMock,
             postcodeNormalisedStripped,
             { page: 1, limit: perPage },
+            {},
           );
           expect(isValidPostcodeSpy).toHaveBeenCalledWith(postcodeNormalisedStripped);
           expect(isValidPostcodeSpy).toReturnWith(true);
@@ -132,12 +135,16 @@ describe('Test search.controller', () => {
                 itemsCount: perPage,
                 scannedItemsCount: atfsNumber,
               },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+              },
             },
           );
           expect(geolocationService.nearest).toHaveBeenCalledWith(
             reqMock,
             postcodeNormalisedStripped,
             { page: 1, limit: perPage },
+            {},
           );
           expect(isValidPostcodeSpy).toHaveBeenCalledWith(postcodeNormalisedStripped);
           expect(isValidPostcodeSpy).toReturnWith(true);
@@ -162,12 +169,16 @@ describe('Test search.controller', () => {
                 itemsCount: perPage,
                 scannedItemsCount: atfsNumber,
               },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+              },
             },
           );
           expect(geolocationService.nearest).toHaveBeenCalledWith(
             reqMock,
             postcodeNormalisedStripped,
             { page: 3, limit: perPage },
+            {},
           );
           expect(isValidPostcodeSpy).toHaveBeenCalledWith(postcodeNormalisedStripped);
           expect(isValidPostcodeSpy).toReturnWith(true);
@@ -192,12 +203,16 @@ describe('Test search.controller', () => {
                 itemsCount: perPage,
                 scannedItemsCount: atfsNumber,
               },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+              },
             },
           );
           expect(geolocationService.nearest).toHaveBeenCalledWith(
             reqMock,
             postcodeNormalisedStripped,
             { page: maxPageNumber, limit: perPage },
+            {},
           );
         });
       });
@@ -220,12 +235,16 @@ describe('Test search.controller', () => {
                 itemsCount: perPage,
                 scannedItemsCount: atfsNumber,
               },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+              },
             },
           );
           expect(geolocationService.nearest).toHaveBeenCalledWith(
             reqMock,
             postcodeNormalisedStripped,
             { page: 1, limit: perPage },
+            {},
           );
         });
       });
@@ -262,12 +281,16 @@ describe('Test search.controller', () => {
                 itemsCount: perPage,
                 scannedItemsCount: atfsNumber,
               },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+              },
             },
           );
           expect(geolocationService.nearest).toHaveBeenCalledWith(
             reqMock,
             postcode.normalisedStripped,
             { page: 1, limit: perPage },
+            {},
           );
           expect(isValidPostcodeSpy).toHaveBeenCalledWith(postcode.normalisedStripped);
           expect(isValidPostcodeSpy).toReturnWith(true);
@@ -313,6 +336,7 @@ describe('Test search.controller', () => {
         reqMock,
         postcodeNormalisedStripped,
         { page: 1, limit: perPage },
+        {},
       );
     });
   });
