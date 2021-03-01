@@ -83,7 +83,7 @@ describe('Test search.controller', () => {
         expect(toNormalisedSpy).toReturnWith(postcodeNormalised);
       });
 
-      describe('when valid postcode provied and no page given', () => {
+      describe('when valid postcode provided and no page given', () => {
         it('should render 1 page and call geolocationService.nearest() to get first 5 ATFs', async () => {
           reqMock.query = { postcode };
 
@@ -248,9 +248,132 @@ describe('Test search.controller', () => {
           );
         });
       });
+
+      describe('When results filtering is present in request', () => {
+        it('should add the filter to the view context filters object when present in the request query', async () => {
+          reqMock.query = { postcode, page: '-1', removeAtfsWithNoAvailability: 'true' };
+
+          await search(reqMock, resMock, nextMock);
+
+          expect(renderSpy).toHaveBeenCalledWith(
+            'search/results',
+            {
+              search: postcodeNormalisedStripped,
+              searchNormalised: postcodeNormalised,
+              data: atfs,
+              paginationSettings: {
+                currentPage: 1,
+                perPage,
+                itemsCount: perPage,
+                scannedItemsCount: atfsNumber,
+              },
+              filters: {
+                removeAtfsWithNoAvailability: true,
+              },
+            },
+          );
+          expect(geolocationService.nearest).toHaveBeenCalledWith(
+            reqMock,
+            postcodeNormalisedStripped,
+            { page: 1, limit: perPage },
+            { removeAtfsWithNoAvailability: 'true' },
+          );
+        });
+
+        it('should add the filter to the view context filters object when present in the request body', async () => {
+          reqMock.query = { postcode, page: '-1' };
+          reqMock.body = { filters: 'removeNoAvailability' };
+
+          await search(reqMock, resMock, nextMock);
+
+          expect(renderSpy).toHaveBeenCalledWith(
+            'search/results',
+            {
+              search: postcodeNormalisedStripped,
+              searchNormalised: postcodeNormalised,
+              data: atfs,
+              paginationSettings: {
+                currentPage: 1,
+                perPage,
+                itemsCount: perPage,
+                scannedItemsCount: atfsNumber,
+              },
+              filters: {
+                removeAtfsWithNoAvailability: true,
+              },
+            },
+          );
+          expect(geolocationService.nearest).toHaveBeenCalledWith(
+            reqMock,
+            postcodeNormalisedStripped,
+            { page: 1, limit: perPage },
+            { removeAtfsWithNoAvailability: 'true' },
+          );
+        });
+
+        it('should set the filter to false in view context when not present in request body or query', async () => {
+          reqMock.query = { postcode, page: '-1' };
+
+          await search(reqMock, resMock, nextMock);
+
+          expect(renderSpy).toHaveBeenCalledWith(
+            'search/results',
+            {
+              search: postcodeNormalisedStripped,
+              searchNormalised: postcodeNormalised,
+              data: atfs,
+              paginationSettings: {
+                currentPage: 1,
+                perPage,
+                itemsCount: perPage,
+                scannedItemsCount: atfsNumber,
+              },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+              },
+            },
+          );
+          expect(geolocationService.nearest).toHaveBeenCalledWith(
+            reqMock,
+            postcodeNormalisedStripped,
+            { page: 1, limit: perPage },
+            {},
+          );
+        });
+
+        it('should set the filter to false in view context when false in the request query', async () => {
+          reqMock.query = { postcode, page: '-1', removeAtfsWithNoAvailability: 'false' };
+
+          await search(reqMock, resMock, nextMock);
+
+          expect(renderSpy).toHaveBeenCalledWith(
+            'search/results',
+            {
+              search: postcodeNormalisedStripped,
+              searchNormalised: postcodeNormalised,
+              data: atfs,
+              paginationSettings: {
+                currentPage: 1,
+                perPage,
+                itemsCount: perPage,
+                scannedItemsCount: atfsNumber,
+              },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+              },
+            },
+          );
+          expect(geolocationService.nearest).toHaveBeenCalledWith(
+            reqMock,
+            postcodeNormalisedStripped,
+            { page: 1, limit: perPage },
+            {},
+          );
+        });
+      });
     });
 
-    describe('when various valid postocde formats provided and no page given', () => {
+    describe('when various valid postcode formats provided and no page given', () => {
       it('should render 1 search/results page and call geolocationService.nearest() to get first 5 ATFs', () => {
         const isValidPostcodeSpy = jest.spyOn(postcodeUtils, 'isValidPostcode');
         const toNormalisedSpy = jest.spyOn(postcodeUtils, 'toNormalised');
