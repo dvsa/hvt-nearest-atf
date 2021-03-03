@@ -1,5 +1,5 @@
-{% macro headscript(settings) %}
-{% if settings.analytics === true %}
+{% macro headscript(analytics) %}
+{% if analytics === true %}
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -10,8 +10,8 @@
 {% endif %}
 {% endmacro %}
 
-{% macro bodyscript(settings) %}
-{% if settings.analytics === true %}
+{% macro bodyscript(analytics) %}
+{% if analytics === true %}
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MCZ8WGQ"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

@@ -1,4 +1,4 @@
-{% from "includes/analytics/macro.njk" import headscript as gaScript %}
+{% from "includes/analytics/macro.njk" import headscript as gaHeadScript %}
 <!--[if !IE 8]><!-->
        <link href="{{getAsset('all.css')}}" rel="stylesheet">
   <!--<![endif]-->
@@ -58,3 +58,4 @@
         });
   </script>
 
+  {{ gaHeadScript(analytics) }}
