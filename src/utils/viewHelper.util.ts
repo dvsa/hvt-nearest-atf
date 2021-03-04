@@ -1,6 +1,7 @@
 import nunjucks, { Environment } from 'nunjucks';
 import { Express } from 'express';
 import { format, utcToZonedTime } from 'date-fns-tz';
+import { isValid, parseISO } from 'date-fns';
 
 export const setUpNunjucks = (app: Express): Environment => {
   const env = nunjucks.configure(['views'], {
@@ -9,11 +10,17 @@ export const setUpNunjucks = (app: Express): Environment => {
   }).addGlobal('NODE_ENV', process.env.NODE_ENV)
     .addGlobal('getAsset', (name: string) => (process.env.CDN_URL || '/assets/') + name)
     // eslint-disable-next-line max-len
-    .addFilter('formatDate', (date: string) => format(utcToZonedTime(new Date(date), process.env.TIMEZONE), 'd MMMM yyyy'))
+    .addFilter('formatDate', (date: string) => {
+      console.log('formatDate: ', date);
+      format(utcToZonedTime(new Date(date), process.env.TIMEZONE), 'd MMMM yyyy');
+    })
     // eslint-disable-next-line max-len
-    .addFilter('formatDateTime', (date: string) => format(utcToZonedTime(new Date(date), process.env.TIMEZONE), 'EEEE d MMMM yyyy \'at\' h:mmaaaaa\'m\''))
+    .addFilter('formatDateTime', (date: string) => {
+      console.log('formatDateTime: ', date);
+      format(utcToZonedTime(new Date(date), process.env.TIMEZONE), 'EEEE d MMMM yyyy \'at\' h:mmaaaaa\'m\'');
+    })
     // eslint-disable-next-line max-len
-    .addFilter('isDateBeforeToday', (date: number) => utcToZonedTime(new Date(date), process.env.TIMEZONE) < utcToZonedTime(new Date(), process.env.TIMEZONE))
+    .addFilter('isDateUndefinedOrBeforeToday', (date: number | undefined) => ((date && isValid(parseISO(date.toString()))) ? utcToZonedTime(new Date(date), process.env.TIMEZONE) < utcToZonedTime(new Date(), process.env.TIMEZONE) : true))
     .addFilter('to1DP', (numeral: number): string => numeral.toFixed(1))
     .addFilter('wrapPhraseIntoLink', (text: string, phrases: string[], link: string, cssClass: string): string => {
       let modifiedText = text;
