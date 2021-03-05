@@ -78,5 +78,21 @@ describe('Filters utility tests', () => {
       const result = getFiltersFromRequest(requestMock);
       expect(result).toEqual({});
     });
+
+    test('should return an empty object if clearFilters is included in filters list', () => {
+      requestMock.body = {
+        filters: ['removeNoAvailability', 'clearFilters', 'otherFilter', 'anotherFilter'],
+      };
+      const result = getFiltersFromRequest(requestMock);
+      expect(result).toEqual({});
+    });
+
+    test('should return an empty object if clearFilters is the only filter present', () => {
+      requestMock.body = {
+        filters: 'clearFilters',
+      };
+      const result = getFiltersFromRequest(requestMock);
+      expect(result).toEqual({});
+    });
   });
 });
