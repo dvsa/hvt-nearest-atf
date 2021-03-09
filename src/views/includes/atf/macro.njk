@@ -97,7 +97,7 @@
       <b>Availability</b>
     </span>
     <br>
-    {% if (availability.isAvailable === undefined) or (availability.endDate | isDateBeforeToday )%}
+    {% if (availability.isAvailable === undefined) or (availability.endDate | isDateUndefinedOrBeforeToday )%}
       {{ govukTag({
         text: "NO INFORMATION",
         classes: "govuk-tag--grey"
@@ -108,14 +108,18 @@
         classes: "govuk-tag--green"
       }) }}
       <br>
-      <span class="govuk-body-s">Before {{ availability.endDate | formatDate }}</span>
+      {% if availability.endDate %}
+          <span class="govuk-body-s">Before {{ availability.endDate | formatDate }}</span>
+      {% endif %}
     {% else %}
       {{ govukTag({
         text: "FULLY BOOKED",
         classes: "govuk-tag--red"
       }) }}
       <br>
-      <span class="govuk-body-s">Until {{ availability.endDate | formatDate }}</span>
+      {% if availability.endDate %}
+          <span class="govuk-body-s">Before {{ availability.endDate | formatDate }}</span>
+      {% endif %}
     {% endif %}
     <br>
   </p>

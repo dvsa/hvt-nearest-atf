@@ -1,6 +1,7 @@
 import nunjucks, { Environment } from 'nunjucks';
 import { Express } from 'express';
 import { format, utcToZonedTime } from 'date-fns-tz';
+import { isValid, parseISO } from 'date-fns';
 
 export const setUpNunjucks = (app: Express): Environment => {
   const env = nunjucks.configure(['views'], {
@@ -13,7 +14,7 @@ export const setUpNunjucks = (app: Express): Environment => {
     // eslint-disable-next-line max-len
     .addFilter('formatDateTime', (date: string) => format(utcToZonedTime(new Date(date), process.env.TIMEZONE), 'EEEE d MMMM yyyy \'at\' h:mmaaaaa\'m\''))
     // eslint-disable-next-line max-len
-    .addFilter('isDateBeforeToday', (date: number) => utcToZonedTime(new Date(date), process.env.TIMEZONE) < utcToZonedTime(new Date(), process.env.TIMEZONE))
+    .addFilter('isDateUndefinedOrBeforeToday', (date: number | undefined) => ((date && isValid(parseISO(date.toString()))) ? utcToZonedTime(new Date(date), process.env.TIMEZONE) < utcToZonedTime(new Date(), process.env.TIMEZONE) : true))
     .addFilter('to1DP', (numeral: number): string => numeral.toFixed(1))
     .addFilter('wrapPhraseIntoLink', (text: string, phrases: string[], link: string, cssClass: string): string => {
       let modifiedText = text;
