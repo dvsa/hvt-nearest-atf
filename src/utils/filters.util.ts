@@ -13,6 +13,9 @@ export const getFiltersFromRequest = (req: Request): ResultsFilters => {
   if (postParamFilters && postParamFilters.includes('removeNoAvailability')) {
     resultsFilters.removeAtfsWithNoAvailability = 'true';
   }
+  if (postParamFilters && postParamFilters.includes('clearFilters')) {
+    return {};
+  }
 
   return resultsFilters;
 };

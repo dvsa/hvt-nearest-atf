@@ -47,7 +47,6 @@ describe('Test viewHelper.util', () => {
 
   describe('isDateUndefinedOrBeforeToday filter function', () => {
     const undefinedOrInvalidDates = [undefined, false, true, null, '', 0, 0o0, NaN, new Date('')];
-    // eslint-disable-next-line max-len
     const isDateUndefinedOrBeforeToday: IsDateUndefinedOrBeforeTodayFunctionType = <IsDateUndefinedOrBeforeTodayFunctionType> nunjucks.getFilter('isDateUndefinedOrBeforeToday');
 
     it('should return true for a date that occurs before today\'s date', () => {
@@ -58,10 +57,11 @@ describe('Test viewHelper.util', () => {
       expect(isDateUndefinedOrBeforeToday(yesterday)).toBe(true);
     });
 
-    it('should return false for a date that occurs on today\'s date', () => {
-      const today: string = new Date().toISOString();
+    it('should return true for a time in the past that occurs on today\'s date', () => {
+      const oneHourInMs = 1000 * 60 * 60;
+      const dateOneHourAgo = new Date(Date.now() - oneHourInMs).toISOString();
 
-      expect(isDateUndefinedOrBeforeToday(today)).toBe(false);
+      expect(isDateUndefinedOrBeforeToday(dateOneHourAgo)).toBe(true);
     });
 
     it('should return false for a date that occurs after today\'s date', () => {
@@ -80,7 +80,6 @@ describe('Test viewHelper.util', () => {
   });
 
   describe('wrapPhraseIntoLink filter function', () => {
-    // eslint-disable-next-line max-len
     const wrapPhraseIntoLink: WrapPhraseIntoLinkFunctionType = <WrapPhraseIntoLinkFunctionType> nunjucks.getFilter('wrapPhraseIntoLink');
 
     const phrases: string[] = ['foo', 'bar', 'baz'];
@@ -100,7 +99,6 @@ describe('Test viewHelper.util', () => {
 
       const result: string = wrapPhraseIntoLink(text, phrases, link, cssClasses);
 
-      // eslint-disable-next-line max-len
       expect(result).toBe(`lorem ipsum <a href="${link}" class="${cssClasses}" target="_blank">foo</a> <a href="${link}" class="${cssClasses}" target="_blank">bar</a>`);
     });
 

@@ -1,7 +1,7 @@
 {% from "includes/atf/macro.njk" import renderAtf %}
 {% from "includes/pagination/macro.njk" import pagination %}
 {% from "govuk-frontend/govuk/components/details/macro.njk" import govukDetails %}
-{% from "govuk-frontend/govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk-frontend/govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk-frontend/govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "layouts/layout.njk" %}
@@ -19,50 +19,56 @@
     Test centres near '{{ searchNormalised | escape }}'
     <p class="govuk-body-s"></p>
   </h1>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-one-half govuk-hint">
-      {% set start = (paginationSettings.currentPage - 1) * paginationSettings.perPage + 1 %}
-      {% set end = start + paginationSettings.itemsCount - 1 %}
-      {% set total = paginationSettings.scannedItemsCount %}
-      Showing {{ start }} to {{ end }} of {{ total }} results
-    </div>
-    <div class="govuk-grid-column-one-half">
-      {% set filterUrl = "?postcode=" + search %}
-      <form action={{filterUrl}} method="POST" id="filter-results-form">
-        {{ govukCheckboxes({
+  <div class="govuk-hint">
+    {% set start = (paginationSettings.currentPage - 1) * paginationSettings.perPage + 1 %}
+    {% set end = start + paginationSettings.itemsCount - 1 %}
+    {% set total = paginationSettings.scannedItemsCount %}
+    Showing {{ start }} to {{ end }} of {{ total }} results
+  </div>
+  {% set filterUrl = "?postcode=" + search %}
+  <form action={{filterUrl}} method="POST" id="filter-results-form">
+    <div class="govuk-form-group dvsa-no-margin-bottom">
+      <fieldset class="govuk-fieldset">
+        {{ govukRadios({
+          classes: "govuk-radios--small govuk-radios--inline",
           name: "filters",
-          classes: "govuk-checkboxes--small",
           fieldset: {
             legend: {
-              text: "Filter the results"
+              text: "Show:"
             }
           },
           items: [
             {
-              id: "remove-no-availability-filter-checkbox",
+              value: "clearFilters",
+              checked: filters.showAll,
+              text: "All",
+              id: "show-all-results-radio-button",
+              attributes: {
+                onchange: "this.form.submit();"
+              }
+            },
+            {
               value: "removeNoAvailability",
-              text: "Remove fully booked test centres",
-              checked: filters.removeAtfsWithNoAvailability
+              checked: filters.removeAtfsWithNoAvailability,
+              text: "Centres with tests available",
+              id: "remove-no-availability-filter-radio-button",
+              attributes: {
+                onchange: "this.form.submit();"
+              }
             }
           ]
         }) }}
-        <div class="govuk-button-group">
-          {{ govukButton({
-            text: "Filter",
-            attributes: {
-              id: "filters-submit-button"
-            }
-          }) }}
-
-          {% set clearFiltersLink = "?postcode=" + search %}
-          <a class="govuk-link govuk-link--no-visited-state govuk-!-padding-1"
-            href={{clearFiltersLink}} id="clear-filters-link">
-            Clear filters
-          </a>
-        </div>
-      </form>
+      </fieldset>
     </div>
-  </div>
+    <noscript>
+      {{ govukButton({
+        text: "Filter",
+        attributes: {
+          id: "filter-results-button"
+        }
+      }) }}
+    </noscript>
+  </form>
 
   <div class="search-results">
     <hr>

@@ -103,6 +103,7 @@ describe('Test search.controller', () => {
               },
               filters: {
                 removeAtfsWithNoAvailability: false,
+                showAll: true,
               },
             },
           );
@@ -137,6 +138,7 @@ describe('Test search.controller', () => {
               },
               filters: {
                 removeAtfsWithNoAvailability: false,
+                showAll: true,
               },
             },
           );
@@ -171,6 +173,7 @@ describe('Test search.controller', () => {
               },
               filters: {
                 removeAtfsWithNoAvailability: false,
+                showAll: true,
               },
             },
           );
@@ -205,6 +208,7 @@ describe('Test search.controller', () => {
               },
               filters: {
                 removeAtfsWithNoAvailability: false,
+                showAll: true,
               },
             },
           );
@@ -237,6 +241,7 @@ describe('Test search.controller', () => {
               },
               filters: {
                 removeAtfsWithNoAvailability: false,
+                showAll: true,
               },
             },
           );
@@ -269,6 +274,7 @@ describe('Test search.controller', () => {
               },
               filters: {
                 removeAtfsWithNoAvailability: true,
+                showAll: false,
               },
             },
           );
@@ -300,6 +306,7 @@ describe('Test search.controller', () => {
               },
               filters: {
                 removeAtfsWithNoAvailability: true,
+                showAll: false,
               },
             },
           );
@@ -308,6 +315,101 @@ describe('Test search.controller', () => {
             postcodeNormalisedStripped,
             { page: 1, limit: perPage },
             { removeAtfsWithNoAvailability: 'true' },
+          );
+        });
+
+        it('should set the showAll filter property to true in the view context when present in the request body', async () => {
+          reqMock.query = { postcode, page: '-1' };
+          reqMock.body = { filters: 'clearFilters' };
+
+          await search(reqMock, resMock, nextMock);
+
+          expect(renderSpy).toHaveBeenCalledWith(
+            'search/results',
+            {
+              search: postcodeNormalisedStripped,
+              searchNormalised: postcodeNormalised,
+              data: atfs,
+              paginationSettings: {
+                currentPage: 1,
+                perPage,
+                itemsCount: perPage,
+                scannedItemsCount: atfsNumber,
+              },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+                showAll: true,
+              },
+            },
+          );
+          expect(geolocationService.nearest).toHaveBeenCalledWith(
+            reqMock,
+            postcodeNormalisedStripped,
+            { page: 1, limit: perPage },
+            {},
+          );
+        });
+
+        it('should set the showAll filter property to true in the view context even if other filters are present', async () => {
+          reqMock.query = { postcode, page: '-1' };
+          reqMock.body = { filters: ['clearFilters', 'removeNoAvailability'] };
+
+          await search(reqMock, resMock, nextMock);
+
+          expect(renderSpy).toHaveBeenCalledWith(
+            'search/results',
+            {
+              search: postcodeNormalisedStripped,
+              searchNormalised: postcodeNormalised,
+              data: atfs,
+              paginationSettings: {
+                currentPage: 1,
+                perPage,
+                itemsCount: perPage,
+                scannedItemsCount: atfsNumber,
+              },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+                showAll: true,
+              },
+            },
+          );
+          expect(geolocationService.nearest).toHaveBeenCalledWith(
+            reqMock,
+            postcodeNormalisedStripped,
+            { page: 1, limit: perPage },
+            {},
+          );
+        });
+
+        it('should set the showAll filter property to true on first load', async () => {
+          reqMock.query = { postcode, page: '1' };
+
+          await search(reqMock, resMock, nextMock);
+
+          expect(renderSpy).toHaveBeenCalledWith(
+            'search/results',
+            {
+              search: postcodeNormalisedStripped,
+              searchNormalised: postcodeNormalised,
+              data: atfs,
+              paginationSettings: {
+                currentPage: 1,
+                perPage,
+                itemsCount: perPage,
+                scannedItemsCount: atfsNumber,
+              },
+              filters: {
+                removeAtfsWithNoAvailability: false,
+                showAll: true,
+              },
+            },
+          );
+          expect(geolocationService.nearest).toHaveBeenCalledWith(
+            reqMock,
+            postcodeNormalisedStripped,
+            { page: 1, limit: perPage },
+            {},
           );
         });
 
@@ -330,6 +432,7 @@ describe('Test search.controller', () => {
               },
               filters: {
                 removeAtfsWithNoAvailability: false,
+                showAll: true,
               },
             },
           );
@@ -360,6 +463,7 @@ describe('Test search.controller', () => {
               },
               filters: {
                 removeAtfsWithNoAvailability: false,
+                showAll: true,
               },
             },
           );
@@ -406,6 +510,7 @@ describe('Test search.controller', () => {
               },
               filters: {
                 removeAtfsWithNoAvailability: false,
+                showAll: true,
               },
             },
           );

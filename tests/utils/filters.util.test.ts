@@ -56,7 +56,6 @@ describe('Filters utility tests', () => {
       expect(result).toEqual({});
     });
 
-    // eslint-disable-next-line max-len
     test('should add removeAtfsWithNoAvailability if req body filters is an array and includes removeNoAvailability', () => {
       requestMock.body = {
         filters: ['otherFilter', 'removeNoAvailability'],
@@ -65,7 +64,6 @@ describe('Filters utility tests', () => {
       expect(result).toEqual(resultsFiltersWithNoAvailability);
     });
 
-    // eslint-disable-next-line max-len
     test('should not add removeAtfsWithNoAvailability if req body filters is an array and does not include removeNoAvailability', () => {
       requestMock.body = {
         filters: ['otherFilter', 'anotherFilter'],
@@ -75,6 +73,22 @@ describe('Filters utility tests', () => {
     });
 
     test('if req body and query are both empty', () => {
+      const result = getFiltersFromRequest(requestMock);
+      expect(result).toEqual({});
+    });
+
+    test('should return an empty object if clearFilters is included in filters list', () => {
+      requestMock.body = {
+        filters: ['removeNoAvailability', 'clearFilters', 'otherFilter', 'anotherFilter'],
+      };
+      const result = getFiltersFromRequest(requestMock);
+      expect(result).toEqual({});
+    });
+
+    test('should return an empty object if clearFilters is the only filter present', () => {
+      requestMock.body = {
+        filters: 'clearFilters',
+      };
       const result = getFiltersFromRequest(requestMock);
       expect(result).toEqual({});
     });

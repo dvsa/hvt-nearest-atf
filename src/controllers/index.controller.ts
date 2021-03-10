@@ -31,7 +31,6 @@ export const search = async (req: Request, res: Response, next: NextFunction): P
     const currentPage = pagination.getCurrentPageFromRequest(req, PAGINATION_MAX_NUMBER_OF_PAGES);
     const paginationOptions: PaginationOptions = { page: currentPage, limit: PAGINATION_ITEMS_PER_PAGE };
     const filters: ResultsFilters = getFiltersFromRequest(req);
-    // eslint-disable-next-line max-len
     const pagedResponse: PagedResponse<AuthorisedTestingFacility> = await geolocationService.nearest(req, postcode, paginationOptions, filters);
 
     if (pagedResponse.Items === undefined) {
@@ -46,6 +45,7 @@ export const search = async (req: Request, res: Response, next: NextFunction): P
       searchNormalised: postcodeUtils.toNormalised(postcode),
       data: pagedResponse.Items,
       filters: {
+        showAll: Object.keys(filters).length < 1,
         removeAtfsWithNoAvailability: filters.removeAtfsWithNoAvailability === 'true',
       },
       paginationSettings: {
