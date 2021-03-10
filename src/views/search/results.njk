@@ -27,35 +27,45 @@
   </div>
   {% set filterUrl = "?postcode=" + search %}
   <form action={{filterUrl}} method="POST" id="filter-results-form">
-
     <div class="govuk-form-group dvsa-no-margin-bottom">
       <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend">
-          Show:
-        </legend>
-        <div class="govuk-radios govuk-radios govuk-radios--small govuk-radios--inline">
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="clear-filters-radio" name="filters" type="radio"
-                value="clearFilters" onchange="this.form.submit();"
-                {% if filters | length %}checked{% endif %}>
-              <label class="govuk-label govuk-radios__label" for="clear-filters-radio">
-                All
-              </label>
-            </div>
-            <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="remove-no-availability-filter-radio" name="filters"
-                type="radio" onchange="this.form.submit();" value="removeNoAvailability"
-                {% if filters.removeAtfsWithNoAvailability %}checked{% endif %}>
-              <label class="govuk-label govuk-radios__label" for="remove-no-availability-filter-radio">
-                Centres with tests available
-              </label>
-            </div>
-        </div>
+        {{ govukRadios({
+          classes: "govuk-radios--small govuk-radios--inline",
+          name: "filters",
+          fieldset: {
+            legend: {
+              text: "Show:"
+            }
+          },
+          items: [
+            {
+              value: "clearFilters",
+              checked: filters.showAll,
+              text: "All",
+              id: "show-all-results-radio-button",
+              attributes: {
+                onchange: "this.form.submit();"
+              }
+            },
+            {
+              value: "removeNoAvailability",
+              checked: filters.removeAtfsWithNoAvailability,
+              text: "Centres with tests available",
+              id: "remove-no-availability-filter-radio-button",
+              attributes: {
+                onchange: "this.form.submit();"
+              }
+            }
+          ]
+        }) }}
       </fieldset>
     </div>
     <noscript>
       {{ govukButton({
-        text: "Filter"
+        text: "Filter",
+        attributes: {
+          id: "filter-results-button"
+        }
       }) }}
     </noscript>
   </form>

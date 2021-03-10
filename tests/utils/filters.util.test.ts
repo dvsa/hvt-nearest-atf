@@ -56,7 +56,6 @@ describe('Filters utility tests', () => {
       expect(result).toEqual({});
     });
 
-    // eslint-disable-next-line max-len
     test('should add removeAtfsWithNoAvailability if req body filters is an array and includes removeNoAvailability', () => {
       requestMock.body = {
         filters: ['otherFilter', 'removeNoAvailability'],
@@ -65,7 +64,6 @@ describe('Filters utility tests', () => {
       expect(result).toEqual(resultsFiltersWithNoAvailability);
     });
 
-    // eslint-disable-next-line max-len
     test('should not add removeAtfsWithNoAvailability if req body filters is an array and does not include removeNoAvailability', () => {
       requestMock.body = {
         filters: ['otherFilter', 'anotherFilter'],
