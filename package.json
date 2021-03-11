@@ -6,6 +6,7 @@
     "lint": "eslint '*/**/*.ts' --quiet --fix",
     "test": "jest --coverage",
     "build:dev": "webpack-cli --config webpack.development.js",
+    "watch:dev": "webpack-cli --config webpack.development.watch.js",
     "build:prod": "webpack-cli --config webpack.production.js",
     "start:dev": "sam local start-api -p 3007 --docker-network hvt-network"
   },
@@ -17,7 +18,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.814.0",
+    "aws-sdk": "^2.831.0",
     "aws-serverless-express": "^3.4.0",
     "axios": "^0.21.1",
     "body-parser": "^1.17.1",
@@ -27,7 +28,7 @@
     "date-fns-tz": "^1.0.12",
     "dotenv": "^8.2.0",
     "express": "^4.15.2",
-    "govuk-frontend": "^3.10.0",
+    "govuk-frontend": "^3.11.0",
     "nunjucks": "^3.2.2",
     "postcode": "^5.0.0"
   },

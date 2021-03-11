@@ -13,13 +13,23 @@ A Serverless Node Express lambda (NearestAtfFunction) for showing nearest ATF ce
 ## Run Locally
 
 1. Follow build steps in [hvt-data](https://gitlab.motdev.org.uk/hvtesting/hvt-data/) to prepare local dataset
-1. [hvt-geolocation](https://gitlab.motdev.org.uk/hvtesting/hvt-geolocation/) and [hvt-read-api](https://gitlab.motdev.org.uk/hvtesting/hvt-read-api/) must be running
+1. [hvt-geolocation]() and [hvt-read-api](https://gitlab.motdev.org.uk/hvtesting/hvt-read-api/) must be running
 1. `npm i`
 1. `cp .env.development .env`
 1. `npm run build:dev`
 1. `npm run start:dev`
 1. Go to `http://localhost:3007/` on browser
 
+### Run and watch Locally
+
+As steps above but instead of `build:dev`
+- `npm run watch:dev`
+
+and in a separate terminal, run
+
+- `npm run start:dev`
+
+Note: only `.ts` files are being watched. Any changes to template `njk` files will not be watched so will not rebuilt.
 
 ## Debug Locally (VS Code only)
 

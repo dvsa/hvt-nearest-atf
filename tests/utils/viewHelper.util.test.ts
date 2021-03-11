@@ -4,7 +4,7 @@ import { setUpNunjucks } from '../../src/utils/viewHelper.util';
 
 type DateFunctionType = (date: string) => string;
 type To1DPFunctionType = (numeral: number) => string;
-type IsDateBeforeTodayFunctionType = (date: string) => boolean;
+type IsDateUndefinedOrBeforeTodayFunctionType = (date: string) => boolean;
 type WrapPhraseIntoLinkFunctionType = (text: string, phrases: string[], link: string, cssClass: string) => string;
 
 const app: Express = express();
@@ -45,35 +45,41 @@ describe('Test viewHelper.util', () => {
     });
   });
 
-  describe('isDateBeforeToday filter function', () => {
-    // eslint-disable-next-line max-len
-    const isDateBeforeToday: IsDateBeforeTodayFunctionType = <IsDateBeforeTodayFunctionType> nunjucks.getFilter('isDateBeforeToday');
+  describe('isDateUndefinedOrBeforeToday filter function', () => {
+    const undefinedOrInvalidDates = [undefined, false, true, null, '', 0, 0o0, NaN, new Date('')];
+    const isDateUndefinedOrBeforeToday: IsDateUndefinedOrBeforeTodayFunctionType = <IsDateUndefinedOrBeforeTodayFunctionType> nunjucks.getFilter('isDateUndefinedOrBeforeToday');
 
     it('should return true for a date that occurs before today\'s date', () => {
       const today: Date = new Date();
       today.setDate(today.getDate() - 1);
       const yesterday: string = today.toISOString();
 
-      expect(isDateBeforeToday(yesterday)).toBe(true);
+      expect(isDateUndefinedOrBeforeToday(yesterday)).toBe(true);
     });
 
-    it('should return false for a date that occurs on today\'s date', () => {
-      const today: string = new Date().toISOString();
+    it('should return true for a time in the past that occurs on today\'s date', () => {
+      const oneHourInMs = 1000 * 60 * 60;
+      const dateOneHourAgo = new Date(Date.now() - oneHourInMs).toISOString();
 
-      expect(isDateBeforeToday(today)).toBe(false);
+      expect(isDateUndefinedOrBeforeToday(dateOneHourAgo)).toBe(true);
     });
 
-    it('should return false for a date that occurs aftet today\'s date', () => {
+    it('should return false for a date that occurs after today\'s date', () => {
       const today: Date = new Date();
       today.setDate(today.getDate() + 1);
       const tomorrow: string = today.toISOString();
 
-      expect(isDateBeforeToday(tomorrow)).toBe(false);
+      expect(isDateUndefinedOrBeforeToday(tomorrow)).toBe(false);
+    });
+
+    undefinedOrInvalidDates.forEach((date) => {
+      it(`should return true for an undefined or invalid date like: ${JSON.stringify(date)}`, () => {
+        expect(isDateUndefinedOrBeforeToday(JSON.stringify(date))).toBe(true);
+      });
     });
   });
 
   describe('wrapPhraseIntoLink filter function', () => {
-    // eslint-disable-next-line max-len
     const wrapPhraseIntoLink: WrapPhraseIntoLinkFunctionType = <WrapPhraseIntoLinkFunctionType> nunjucks.getFilter('wrapPhraseIntoLink');
 
     const phrases: string[] = ['foo', 'bar', 'baz'];
@@ -93,7 +99,6 @@ describe('Test viewHelper.util', () => {
 
       const result: string = wrapPhraseIntoLink(text, phrases, link, cssClasses);
 
-      // eslint-disable-next-line max-len
       expect(result).toBe(`lorem ipsum <a href="${link}" class="${cssClasses}" target="_blank">foo</a> <a href="${link}" class="${cssClasses}" target="_blank">bar</a>`);
     });
 
