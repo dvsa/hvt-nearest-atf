@@ -6,18 +6,14 @@
 {% from "govuk-frontend/govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk-frontend/govuk/components/footer/macro.njk" import govukFooter %}
 {% from "includes/analytics/macro.njk" import bodyscript as gaBodyScript %}
+{% from "govuk-frontend/govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
 
 {% set htmlClasses = "app-html-class" %}
 {% set htmlLang = "en" %}
-{% set assetPath = "" %}
-{% set assetUrl = "<YOUR-DOMAIN>" %}
 {% set themeColor = "blue" %}
 {% set bodyClasses = "app-body-class" %}
-{% set bodyAttributes = {
-  'data-test': 'My value',
-  'data-other': 'report:details'
-} %}
 {% set containerClasses = "app-width-container" %}
+{% set serviceName = "Find a test centre for an HGV, bus or trailer MOT" %}
 <!DOCTYPE html>
 <html lang="en" class="govuk-template app-html-class">
 
@@ -37,13 +33,14 @@
 <body class="govuk-template__body app-body-class" data-test="My value" data-other="report:details">
   <script>
     document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
-
   </script>
 
+
+{% block bodyStart %}
+{% set hidden = false %}
 {% include "includes/cookie-manager/cookie-success-banner.njk" %}
 {% include "includes/cookie-manager/cookie-success-all-banner.njk" %}
 {% include "includes/cookie-manager/cookie-banner.njk" %}
-{% block bodyStart %}
 {% endblock %}
 
 {% block skipLink %}
@@ -58,7 +55,7 @@
   {{ govukHeader({
     homepageUrl: "https://www.gov.uk",
     containerClasses: "govuk-width-container",
-    serviceName: "Find a test centre for an HGV, bus or trailer MOT",
+    serviceName: serviceName,
     serviceUrl: "https://find-test-centre-hgv-bus-trailer-mot.service.gov.uk"
   }) }}
   
