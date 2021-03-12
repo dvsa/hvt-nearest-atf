@@ -14,6 +14,23 @@
     <script src="{{getAsset('html5shiv.js')}}"></script>
   <![endif]-->
 
+    <!-- TODO remove these once BL-11758 is complete -->
+    <!-- Include the styles here as assets aren't available yet - see this ticket BL-11758 -->
+    <style>
+        .hidden {
+            display: none;
+        }
+        .js-show {
+            display: none;
+        }
+        .js-enabled .js-show {
+            display: inherit;
+        }
+        .capitalize:first-letter {
+            text-transform: capitalize;
+        }
+    </style>
+
   <link rel="icon" href="{{getAsset('images/favicon.ico')}}" type="image/x-icon"/>
   <script src="{{getAsset('cookie-manager.js')}}"></script>
   <script>
