@@ -18,13 +18,14 @@
           text: "Set cookie preferences",
           name: "analytics",
           href: "/cookie-preferences",
-          classes:"govuk-button"
-          
+          classes:"govuk-button",
+          attributes: { id: 'cookie-accept-submit' }
         },
         {
           text: "Accept all cookies",
           type: "submit",
-          value:"Accept all"
+          value:"Accept all",
+          attributes: { id: 'set-cookie-preferences' }
         }
       ]
     }
