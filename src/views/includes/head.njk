@@ -1,3 +1,4 @@
+{% from "includes/analytics/macro.njk" import headscript as gaHeadScript %}
 <!--[if !IE 8]><!-->
        <link href="{{getAsset('all.css')}}" rel="stylesheet">
   <!--<![endif]-->
@@ -14,3 +15,6 @@
   <![endif]-->
 
   <link rel="icon" href="{{getAsset('images/favicon.ico')}}" type="image/x-icon"/>
+  <script src="{{getAsset('cookie-manager.js')}}"></script>
+
+  {{ gaHeadScript(analytics) }}

@@ -4,3 +4,21 @@
 @import './search.scss';
 @import './pagination.scss';
 @import './privacy.scss';
+
+.hidden {
+    display: none;
+}
+
+.js-show {
+    display: none;
+}
+
+.js-enabled{
+    .js-show {
+        display: inherit;
+    }
+}
+
+.capitalize:first-letter {
+    text-transform: capitalize;
+}

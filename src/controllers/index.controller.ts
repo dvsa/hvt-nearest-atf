@@ -68,3 +68,7 @@ export const search = async (req: Request, res: Response, next: NextFunction): P
 export const privacy = (req: Request, res: Response) => res.render('index/privacy');
 
 export const accessibility = (req: Request, res: Response) => res.render('index/accessibility');
+
+export const cookiePreferences = (req: Request, res: Response) => res.render('index/cookie-preferences');
+
+export const cookies = (req: Request, res: Response) => res.render('index/cookies');
