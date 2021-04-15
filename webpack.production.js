@@ -9,7 +9,8 @@ const MinifyBundledPlugin = require('minify-bundled-webpack-plugin');
 
 const LAMBDA_NAME = 'NearestAtfFunction';
 const OUTPUT_FOLDER = './dist'
-const BUILD_VERSION = branchName().replace("/","-");
+const REPO_NAME = 'hvt-nearest-atf';
+const BRANCH_NAME = branchName().replace("/","-");
 
 class BundlePlugin {
   constructor(params) {
@@ -56,7 +57,10 @@ class BundlePlugin {
   }
 };
 
-module.exports = merge(common, {
+
+module.exports = env => {
+ let commit = env ? env.commit ? env.commit : 'local' : 'local' ;
+ return merge(common, {
   mode: 'production',
   plugins: [
     new MinifyBundledPlugin({
@@ -67,14 +71,14 @@ module.exports = merge(common, {
         {
           inputPath: `.aws-sam/build/${LAMBDA_NAME}`,
           outputPath: `${OUTPUT_FOLDER}`,
-          outputName: `HVT-${LAMBDA_NAME}-${BUILD_VERSION}`,
+          outputName: `${REPO_NAME}-${BRANCH_NAME}-${commit}`,
           ignore: ['public']
         }
       ],
       assets: [
         {
           inputPath: `./.aws-sam/build/${LAMBDA_NAME}/public`,
-          outputPath: `${OUTPUT_FOLDER}/${LAMBDA_NAME}-cloudfront-assets-${BUILD_VERSION}`,
+          outputPath: `${OUTPUT_FOLDER}/${REPO_NAME}-cloudfront-assets-${BRANCH_NAME}-${commit}`,
         }
       ]
     }),
@@ -84,4 +88,5 @@ module.exports = merge(common, {
       new CssMinimizerPlugin(),
     ],
   },
-});
+})
+};
