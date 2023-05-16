@@ -1,6 +1,6 @@
 {
   "name": "dvsa-hvt-nearest-atf",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "src/app.local.ts",
   "scripts": {
     "lint": "eslint '*/**/*.ts' --quiet --fix",
@@ -10,7 +10,7 @@
     "build:prod": "webpack-cli --config webpack.production.js",
     "start:dev": "sam local start-api -p 3007 --docker-network hvt-network"
   },
-  "contributers": [
+  "contributors": [
     {
       "name": "Shaun Hare",
       "email": "shaun.hare@dvsa.gov.uk"
@@ -19,25 +19,25 @@
   "license": "MIT",
   "dependencies": {
     "@dvsa/cookie-manager": "1.0.11",
-    "aws-sdk": "^2.849.0",
+    "aws-sdk": "^2.1377.0",
     "aws-serverless-express": "^3.4.0",
     "axios": "^0.21.3",
-    "body-parser": "^1.17.1",
+    "body-parser": "^1.20.2",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.3",
     "date-fns": "^2.17.0",
     "date-fns-tz": "^1.1.2",
     "dotenv": "^8.2.0",
-    "express": "^4.15.2",
+    "express": "^4.18.2",
     "govuk-frontend": "^3.11.0",
-    "nunjucks": "^3.2.3",
+    "nunjucks": "^3.2.4",
     "postcode": "^5.1.0"
   },
   "devDependencies": {
-    "@dvsa/eslint-config-ts": "^2.0.0",
-    "@types/aws-lambda": "^8.10.72",
     "@dvsa/cookie-manager": "^1.0.10",
+    "@dvsa/eslint-config-ts": "^3.0.0",
+    "@types/aws-lambda": "^8.10.72",
     "@types/aws-serverless-express": "^3.3.3",
     "@types/compression": "^1.7.0",
     "@types/cors": "^2.8.10",
@@ -47,24 +47,24 @@
     "@types/nunjucks": "^3.1.4",
     "@types/uuid": "^8.3.0",
     "archiver": "^5.2.0",
-    "aws-sam-webpack-plugin": "^0.6.0",
+    "aws-sam-webpack-plugin": "^0.13.0",
     "copy-webpack-plugin": "^6.4.1",
-    "css-minimizer-webpack-plugin": "^1.2.0",
+    "css-minimizer-webpack-plugin": "^5.0.0",
     "current-git-branch": "^1.1.0",
     "eslint": "^7.20.0",
     "eslint-import-resolver-typescript": "^2.4.0",
     "fs-extra": "^9.1.0",
-    "jest": "^26.6.3",
-    "minify-bundled-webpack-plugin": "0.0.3",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^8.0.0",
+    "jest": "^29.5.0",
+    "sass": "^1.62.1",
+    "sass-loader": "^13.2.2",
     "source-map-support": "^0.5.19",
-    "ts-jest": "^26.5.1",
+    "terser-webpack-plugin": "^5.3.8",
+    "ts-jest": "^29.1.0",
     "ts-loader": "^8.0.17",
-    "typescript": "^3.9.9",
+    "typescript": "^5.0.4",
     "uuid": "^8.3.2",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12",
+    "webpack": "^5.82.1",
+    "webpack-cli": "^5.1.1",
     "webpack-merge": "^5.7.3"
   }
 }
