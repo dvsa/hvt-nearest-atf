@@ -12,8 +12,8 @@ A Serverless Node Express lambda (NearestAtfFunction) for showing nearest ATF ce
 
 ## Run Locally
 
-1. Follow build steps in [hvt-data](https://gitlab.mot.dvsacloud.uk/hvtesting/hvt-data/) to prepare local dataset
-1. [hvt-geolocation]() and [hvt-read-api](https://gitlab.mot.dvsacloud.uk/hvtesting/hvt-read-api/) must be running
+1. Follow build steps in [hvt-data](https://github.com/dvsa/hvt-data/) to prepare local dataset
+1. [hvt-geolocation](https://github.com/dvsa/hvt-geolocation/) and [hvt-read-api](https://github.com/dvsa/hvt-read-api/) must be running
 1. `npm i`
 1. `cp .env.development .env`
 1. `npm run build:dev`
