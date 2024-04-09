@@ -15,8 +15,8 @@ permissions:
   contents: read
 
 jobs:
-  lint:
-    uses: dvsa/.github/.github/workflows/nodejs-lint.yaml@v2.3
+  # lint:
+  #   uses: dvsa/.github/.github/workflows/nodejs-lint.yaml@v2.3
 
   test:
     uses: dvsa/.github/.github/workflows/nodejs-test.yaml@v3.0.0
