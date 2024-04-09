@@ -1,0 +1,31 @@
+name: Application CI
+
+on:
+  push:
+    paths-ignore:
+  workflow_dispatch:
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  lint:
+    uses: dvsa/.github/.github/workflows/nodejs-lint.yaml@v2.3
+
+  test:
+    uses: dvsa/.github/.github/workflows/nodejs-test.yaml@v3.0.0
+    with:
+      test-command: npm run test
+
+  build:
+    uses: dvsa/.github/.github/workflows/nodejs-build.yaml@v2.3
+    needs: [test]
+    with:
+      upload_artifact: true
+      build_command: build:prod
