@@ -13,19 +13,19 @@ A Serverless Node Express lambda (NearestAtfFunction) for showing nearest ATF ce
 ## Run Locally
 
 1. Follow build steps in [hvt-data](https://github.com/dvsa/hvt-data/) to prepare local dataset
-1. [hvt-geolocation](https://github.com/dvsa/hvt-geolocation/) and [hvt-read-api](https://github.com/dvsa/hvt-read-api/) must be running
-1. `npm i`
-1. `cp .env.development .env`
-1. `npm run build:dev`
-1. `npm run start:dev`
-1. Go to `http://localhost:3007/` on browser
+2. [hvt-geolocation](https://github.com/dvsa/hvt-geolocation/) and [hvt-read-api](https://github.com/dvsa/hvt-read-api/) must be running
+3. `npm i`
+4. `cp .env.development .env`
+5. `npm run build:dev`
+6. `npm run start:dev`
+7. Go to `http://localhost:3007/` on browser
 
 ### Run and watch Locally
 
 As steps above but instead of `build:dev`
 - `npm run watch:dev`
 
-and in a separate terminal, run
+And in a separate terminal, run
 
 - `npm run start:dev`
 
@@ -34,9 +34,9 @@ Note: only `.ts` files are being watched. Any changes to template `njk` files wi
 ## Debug Locally (VS Code only)
 
 1. Run lambdas in debug mode: `npm run start:dev -- -d 5858`
-1. Add a breakpoint to the lambda being tested (`src/controllers/index.controller.ts`)
-1. Run the debug config from VS Code that corresponds to lambda being tested (`NearestAtfFunction`)
-1. Go to `http://localhost:3007/` on browser
+2. Add a breakpoint to the lambda being tested (`src/controllers/index.controller.ts`)
+3. Run the debug config from VS Code that corresponds to lambda being tested (`NearestAtfFunction`)
+4. Go to `http://localhost:3007/` on browser
 
 
 ## Tests
@@ -50,9 +50,9 @@ Note: only `.ts` files are being watched. Any changes to template `njk` files wi
 ## Build for Production
 
 1. `npm i`
-1. add environment variables to `.env`
-1. `npm run build:prod`
-1.  Zip file and minified assets and can be found in `./dist/`
+2. Add environment variables to `.env`
+3. `npm run build:prod`
+4. Zip file and minified assets and can be found in `./dist/`
 
 
 ## Logging
