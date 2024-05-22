@@ -51,7 +51,6 @@
 {% endblock %}
 
 {% block header %}
-
   {{ govukHeader({
     homepageUrl: "https://www.gov.uk",
     containerClasses: "govuk-width-container",
@@ -61,6 +60,7 @@
   }) }}
 
 {% endblock %}
+
 <div class="govuk-width-container ">
 {% set mainClasses = "app-main-class" %}
 
@@ -102,7 +102,8 @@
           text: "Cookies"
         }
       ]
-    }
+    },
+    classes: "noPrint"
   }) }}
 {% endblock %}
 
