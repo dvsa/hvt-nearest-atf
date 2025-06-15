@@ -1,21 +1,20 @@
 {# Example that changes every setting in the template #}
 
-{% from "govuk-frontend/govuk/components/back-link/macro.njk" import govukBackLink %}
-{% from "govuk-frontend/govuk/components/skip-link/macro.njk" import govukSkipLink %}
-{% from "govuk-frontend/govuk/components/header/macro.njk" import govukHeader %}
-{% from "govuk-frontend/govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
-{% from "govuk-frontend/govuk/components/footer/macro.njk" import govukFooter %}
+{% from "govuk-frontend/dist/govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk-frontend/dist/govuk/components/skip-link/macro.njk" import govukSkipLink %}
+{% from "govuk-frontend/dist/govuk/components/header/macro.njk" import govukHeader %}
+{% from "govuk-frontend/dist/govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "govuk-frontend/dist/govuk/components/footer/macro.njk" import govukFooter %}
 {% from "includes/analytics/macro.njk" import bodyscript as gaBodyScript %}
-{% from "govuk-frontend/govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
+{% from "govuk-frontend/dist/govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
+{% from "govuk-frontend/dist/govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 
-{% set htmlClasses = "app-html-class" %}
-{% set htmlLang = "en" %}
 {% set themeColor = "blue" %}
 {% set bodyClasses = "app-body-class" %}
 {% set containerClasses = "app-width-container" %}
 {% set serviceName = "Find a test centre for an HGV, bus or trailer MOT" %}
 <!DOCTYPE html>
-<html lang="en" class="govuk-template app-html-class">
+<html lang="en" class="govuk-template--rebranded app-html-class">
 
 <head>
   <meta charset="utf-8">
@@ -53,12 +52,13 @@
 {% block header %}
   {{ govukHeader({
     homepageUrl: "https://www.gov.uk",
-    containerClasses: "govuk-width-container",
-    serviceName: serviceName,
-    serviceUrl: "https://find-test-centre-hgv-bus-trailer-mot.service.gov.uk",
-    useTudorCrown: true
-  }) }}
+    containerClasses: "govuk-width-container"
+ }) }}
+{{ govukServiceNavigation({
+  serviceName: serviceName,
+  serviceUrl: "https://find-test-centre-hgv-bus-trailer-mot.service.gov.uk"
 
+}) }}
 {% endblock %}
 
 <div class="govuk-width-container ">

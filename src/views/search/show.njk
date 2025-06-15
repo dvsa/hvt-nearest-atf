@@ -1,8 +1,9 @@
-{% from "govuk-frontend/govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk-frontend/govuk/components/fieldset/macro.njk" import govukFieldset %}
-{% from "govuk-frontend/govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk-frontend/dist/govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk-frontend/dist/govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk-frontend/dist/govuk/components/button/macro.njk" import govukButton %}
 {% import "includes/errors.njk" as error %}
-
+{% set govukRebrand = true %}
+{% set htmlClasses = "app-html-class govuk-template--rebranded" %}
 {% extends "layouts/layout.njk" %}
 
 {% block backLink %}
