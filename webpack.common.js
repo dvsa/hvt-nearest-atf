@@ -43,7 +43,15 @@ module.exports = {
         {
           from: './src/public/scss/index.scss',
           to: `.aws-sam/build/${lambdaName}/public/all.css`,
-          transform: (content, path) => sass.renderSync({ file: path }).css.toString(),
+          // trasnform compile sass to css
+          // Note: This is a synchronous operation, so it may block the build process.
+          transform: (content, path) => {
+            const result = sass.compileString(content.toString(), {
+              loadPaths: ['./src/public/scss/'],
+              style: 'compressed',
+            });
+            return result.css.toString();
+          }
         },
       ],
     }),

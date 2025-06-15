@@ -22,14 +22,14 @@
 <title>{% block pageTitle %}Find a test centre for an HGV, bus or trailer MOT{% endblock %}</title>
 
 {% block headIcons %}
-  <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{getAsset('assets/images/favicon.ico')}}" type="image/x-icon" />
 {% endblock %}
 
 {% block head %}
   {% include "includes/head.njk" %}
 {% endblock %}
 </head>
-<body class="govuk-template__body app-body-class" data-test="My value" data-other="report:details">
+<body class="govuk-template__body app-body-class" data-test="test" data-other="report:details">
   <script>
     document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
   </script>
