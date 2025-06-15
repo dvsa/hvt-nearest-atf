@@ -1,7 +1,10 @@
  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  <script src="{{getAsset('all.js')}}"></script>
+  <script type="module" src="{{getAsset('all.js')}}"></script>
+  <script type="module">
+    import { initAll } from "{{getAsset('all.js')}}"
+    initAll();
+  </script>
   <script>
-    window.GOVUKFrontend.initAll()
     window.cookieManager.init({
             "delete-undefined-cookies": true,
             "user-preference-cookie-name": "cm-user-preferences",
