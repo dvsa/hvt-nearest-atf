@@ -38,6 +38,7 @@ module.exports = {
         { from: './src/views', to: `.aws-sam/build/${lambdaName}/views` },
         { from: './node_modules/govuk-frontend', to: `.aws-sam/build/${lambdaName}/views/govuk-frontend` },
         { from: './node_modules/govuk-frontend/dist/govuk/assets', to: `.aws-sam/build/${lambdaName}/public/assets` },
+        { from: './node_modules/govuk-frontend/dist/govuk/assets/rebrand', to: `.aws-sam/build/${lambdaName}/public/assets/rebrand` },
         { from: './node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js', to: `.aws-sam/build/${lambdaName}/public/all.js` },
         { from: './node_modules/@dvsa/cookie-manager/cookie-manager.js', to: `.aws-sam/build/${lambdaName}/public/cookie-manager.js` },
         {
