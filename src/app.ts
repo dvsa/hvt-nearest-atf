@@ -51,7 +51,13 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-  const errorString: string = JSON.stringify(error, Object.getOwnPropertyNames(error));
+  let errorString: string = JSON.stringify(error, Object.getOwnPropertyNames(error));
+  //add correlation ID to error string if available
+  if (req.app.locals.correlationId) {
+    errorString = `Correlation ID: ${req.app.locals.correlationId}, Error: ${errorString}`;
+  }
+  // Log the error to the console
+  console.error(errorString, res);
   const context = { error: process.env.NODE_ENV === 'development' ? errorString : '' };
   res.status(500).render('error/service-unavailable', context);
   next();

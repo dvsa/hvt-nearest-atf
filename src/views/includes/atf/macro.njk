@@ -1,4 +1,4 @@
-{% from "govuk-frontend/govuk/components/tag/macro.njk" import govukTag %}
+{% from "govuk-frontend/dist/govuk/components/tag/macro.njk" import govukTag %}
 
 {% macro renderAtf(data) %}
   <ul class="govuk-list">
@@ -100,12 +100,12 @@
     {% if (availability.isAvailable === undefined) or (availability.endDate | isDateUndefinedOrBeforeToday )%}
       {{ govukTag({
         text: "NO INFORMATION",
-        classes: "govuk-tag--grey"
+        classes: "govuk-tag--grey dvsa-availability-tag"
       }) }}
     {% elseif availability.isAvailable %}
       {{ govukTag({
         text: "TESTS AVAILABLE",
-        classes: "govuk-tag--green"
+        classes: "govuk-tag--green dvsa-availability-tag"
       }) }}
       <br>
       {% if availability.endDate %}
@@ -114,7 +114,7 @@
     {% else %}
       {{ govukTag({
         text: "FULLY BOOKED",
-        classes: "govuk-tag--red"
+        classes: "govuk-tag--red dvsa-availability-tag"
       }) }}
       <br>
       {% if availability.endDate %}
