@@ -64,6 +64,4 @@ jobs:
 
       - name: Push artefact to S3
         run: |
-          aws s3 cp release-${{ needs.release-please.outputs.tag_name }}.zip s3://${{ secrets[format('S3_BUCKET_{0}', matrix.env)] }}/
-    
-            
+          aws s3 cp release-${{ needs.release-please.outputs.tag_name }}.zip s3://${{ secrets.S3_BUCKET }}/
