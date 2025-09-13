@@ -37,12 +37,19 @@ jobs:
 
   release-please:
     name: Release
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
-    uses: dvsa/appdev-github-actions/.github/workflows/release-please.yaml@main
-    with:
-      target-branch: ${{ github.ref_name }}
+    outputs:
+           release_created: ${{ steps.release.outputs.release_created }}
+         
+    steps:
+       - name: Run Release-Please
+         id: release
+         uses: googleapis/release-please-action@v4
+         with:
+            target-branch: ${{ github.ref_name }}
 
   push-artefacts-s3:
     needs: [release-please]
