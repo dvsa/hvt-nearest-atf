@@ -59,7 +59,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: ${{ secrets[format('AWS_ROLE_TO_ASSUME_{0}', matrix.env)] }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Push artefact to S3
