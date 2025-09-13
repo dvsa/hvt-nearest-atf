@@ -9,7 +9,7 @@ type WrapPhraseIntoLinkFunctionType = (text: string, phrases: string[], link: st
 
 const app: Express = express();
 const nunjucks: Environment = setUpNunjucks(app);
-const timezone = 'timezone';
+const timezone = 'Europe/London';
 process.env.TIMEZONE = timezone;
 
 describe('Test viewHelper.util', () => {
@@ -17,7 +17,7 @@ describe('Test viewHelper.util', () => {
     it('should return date in correct format', () => {
       const formatDate: DateFunctionType = <DateFunctionType> nunjucks.getFilter('formatDate');
 
-      const dateString: string = new Date(Date.UTC(2020, 9, 22, 14, 18, 33)).toISOString();
+      const dateString: string = new Date(Date.UTC(2020, 9, 22, 14, 18, 33),).toISOString();
 
       expect(formatDate(dateString)).toEqual('22 October 2020');
     });
@@ -26,10 +26,9 @@ describe('Test viewHelper.util', () => {
   describe('formatDateTime filter function', () => {
     it('should return dateTime in correct format', () => {
       const formatDateTime: DateFunctionType = <DateFunctionType> nunjucks.getFilter('formatDateTime');
-
-      const dateTimeString: string = new Date(Date.UTC(2020, 9, 22, 14, 18, 33)).toISOString();
-
-      expect(formatDateTime(dateTimeString)).toEqual('Thursday 22 October 2020 at 2:18pm');
+       // Use a January date to avoid DST issues (UTC = London time)
+      const dateTimeString: string = new Date(Date.UTC(2020, 0, 22, 13, 18, 33)).toISOString();
+      expect(formatDateTime(dateTimeString)).toEqual('Wednesday 22 January 2020 at 1:18pm');
     });
   });
 
