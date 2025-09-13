@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.1](https://github.com/dvsa/hvt-nearest-atf/compare/v3.0.0...v3.0.1) (2025-09-13)
+
+
+### Bug Fixes
+
+* linting ([b3fb501](https://github.com/dvsa/hvt-nearest-atf/commit/b3fb5017dd55eda18e855432f53b4539f673de5d))
+* prevent test instability ([68ff790](https://github.com/dvsa/hvt-nearest-atf/commit/68ff790520676498e32f34f78f2bb73fb8fb1630))
+
 ## [3.0.0](https://github.com/dvsa/hvt-nearest-atf/compare/v2.7.0...v3.0.0) (2025-09-13)
 
 
