@@ -1,0 +1,59 @@
+name: CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  orchestrator:
+    name: Orchestrator
+    runs-on: ubuntu-latest
+    outputs:
+     should-deploy-artefacts: ${{ steps.changed-files.outputs.any_changed == 'true' || null }}
+    steps:
+      - name: 📨 Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Check for `/src` or `/config` changes
+        uses: tj-actions/changed-files@v46
+        id: changed-files
+        with:
+          since_last_remote_commit: true
+          files: |
+            src/**
+  security:
+    uses: dvsa/.github/.github/workflows/nodejs-security.yaml@main
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    with:
+      args: --severity-threshold=high
+
+  release-please:
+    name: Release
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: dvsa/appdev-github-actions/.github/workflows/release-please.yaml@main
+    with:
+      target-branch: ${{ github.ref_name }}
+
+  push-artefacts-s3:
+    needs: [release-please]
+    name: Push Artefacts
+    runs-on: ubuntu-latest
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+            
