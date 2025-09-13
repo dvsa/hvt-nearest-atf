@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.2](https://github.com/dvsa/hvt-nearest-atf/compare/v3.0.1...v3.0.2) (2025-09-13)
+
+
+### Bug Fixes
+
+* workflow ([237ce0e](https://github.com/dvsa/hvt-nearest-atf/commit/237ce0e187dcd920691c05045206a63c2dfdbf68))
+* workflow ([7ee3fe8](https://github.com/dvsa/hvt-nearest-atf/commit/7ee3fe8f8f16dda51bac632e5ce12dd22f212d3d))
+
 ## [3.0.1](https://github.com/dvsa/hvt-nearest-atf/compare/v3.0.0...v3.0.1) (2025-09-13)
 
 
