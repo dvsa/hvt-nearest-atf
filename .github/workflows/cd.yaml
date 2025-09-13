@@ -1,34 +1,17 @@
+
 name: CD
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["CI for HVT Nearest ATF"]
+    types:
+      - completed
 
 permissions:
   contents: read
   id-token: write
 
 jobs:
-  orchestrator:
-    name: Orchestrator
-    runs-on: ubuntu-latest
-    outputs:
-     should-deploy-artefacts: ${{ steps.changed-files.outputs.any_changed == 'true' || null }}
-    steps:
-      - name: 📨 Checkout
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-
-      - name: Check for `/src` or `/config` changes
-        uses: tj-actions/changed-files@v46
-        id: changed-files
-        with:
-          since_last_remote_commit: true
-          files: |
-            src/**
   security:
     uses: dvsa/.github/.github/workflows/nodejs-security.yaml@main
     secrets:
@@ -43,7 +26,8 @@ jobs:
       contents: write
       pull-requests: write
     outputs:
-           release_created: ${{ steps.release.outputs.release_created }}
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
          
     steps:
        - name: Run Release-Please
@@ -52,16 +36,34 @@ jobs:
          with:
             target-branch: ${{ github.ref_name }}
 
+  
   push-artefacts-s3:
     needs: [release-please]
     name: Push Artefacts
     runs-on: ubuntu-latest
-    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && needs.release-please.outputs.release_created == 'true' }}
+    strategy:
+      matrix:
+        env: [DEV,INT]
+    environment: ${{ matrix.env }}
     steps:
+      - name: Download build artefact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artefact
+
+      - name: Rename artefact with git tag
+        run: |
+          mv artefact.zip release-${{ needs.release-please.outputs.tag_name }}.zip
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets[format('AWS_ROLE_TO_ASSUME_{0}', matrix.env)] }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Push artefact to S3
+        run: |
+          aws s3 cp release-${{ needs.release-please.outputs.tag_name }}.zip s3://${{ secrets[format('S3_BUCKET_{0}', matrix.env)] }}/
+    
             
