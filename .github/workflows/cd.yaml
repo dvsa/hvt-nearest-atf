@@ -30,7 +30,7 @@ jobs:
           files: |
             src/**
   security:
-    uses: dvsa/.github/.github/workflows/nodejs-security.yaml@main
+    uses: dvsa/.github/.github/workflows/nodejs-security.yaml@v5.0.11
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     with:
