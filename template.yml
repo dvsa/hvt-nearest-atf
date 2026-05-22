@@ -18,7 +18,7 @@ Resources:
       Handler: lambda.handler
       MemorySize: 1024
       Role: !GetAtt LambdaExecutionRole.Arn
-      Runtime: nodejs20.x
+      Runtime: nodejs24.x
       Timeout: 30
       Events:
         ProxyApiRoot:
